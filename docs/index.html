@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXBO — Исследование восстановления аккаунта</title>
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray-light: #f0f0f0;
+            --gray: #666666;
+            --gray-dark: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Header */
+        header {
+            padding: 100px 0 80px;
+            border-bottom: 3px solid var(--black);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        /* Section navigation */
+        .section-nav {
+            margin-top: 40px;
+        }
+
+        .section-nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .section-nav-list a {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 14px;
+            background: var(--gray-light);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .section-nav-list a:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--black);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin: 40px 0 20px;
+            color: var(--gray-dark);
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            color: var(--gray-dark);
+        }
+
+        /* Content blocks */
+        .content-block {
+            margin: 30px 0;
+            padding: 35px;
+            background: var(--gray-light);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .content-block code {
+            word-break: break-all;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .content-block-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .content-block-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .content-block-text strong {
+            font-weight: 600;
+        }
+
+        /* Endpoint cards */
+        .endpoint {
+            background: var(--black);
+            color: var(--white);
+            padding: 30px;
+            margin: 25px 0;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            font-weight: 700;
+            padding: 5px 12px;
+            background: var(--white);
+            color: var(--black);
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+
+        .endpoint-url {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .endpoint-description {
+            margin-top: 20px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 1.05rem;
+        }
+
+        th, td {
+            padding: 18px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            background: var(--gray-light);
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        /* Factor cards */
+        .factor {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 25px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid var(--gray-light);
+            transition: border-color 0.3s;
+        }
+
+        .factor:hover {
+            border-color: var(--black);
+        }
+
+        .factor-weight {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .factor-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .factor-desc {
+            font-size: 1.05rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .factor-changeable {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 12px;
+            background: var(--black);
+            color: var(--white);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .factor-changeable.no {
+            background: var(--gray-light);
+            color: var(--gray);
+        }
+
+        /* Calculator */
+        .calculator {
+            background: var(--black);
+            color: var(--white);
+            padding: 50px;
+            margin: 40px 0;
+        }
+
+        .calculator-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+
+        .calculator-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        .calculator-section {
+            margin-bottom: 40px;
+        }
+
+        .calculator-section-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.9;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .calculator-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .calculator-item label {
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .calculator-item select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--black);
+            border: none;
+            cursor: pointer;
+        }
+
+        .calculator-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 12px;
+            background: var(--white);
+            color: var(--black);
+            font-size: 1rem;
+        }
+
+        .calculator-item-note {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        .calculator-result {
+            margin-top: 40px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .result-percentage {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        .result-label {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .result-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .result-bar-fill {
+            height: 100%;
+            background: var(--white);
+            transition: width 0.5s ease;
+        }
+
+        .result-text {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        /* Receipt example */
+        .receipt-example {
+            background: var(--white);
+            color: var(--black);
+            padding: 30px;
+            margin: 25px 0;
+            border: 2px solid var(--black);
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 1px dashed var(--black);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .receipt-total {
+            border-top: 2px solid var(--black);
+            padding-top: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* Info boxes */
+        .info-box {
+            border-left: 4px solid var(--black);
+            padding: 25px 30px;
+            margin: 30px 0;
+            background: var(--gray-light);
+        }
+
+        .info-box-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Activity log */
+        .activity-log {
+            background: var(--gray-light);
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray);
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 15px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-date {
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+
+        .activity-details {
+            color: var(--gray);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            font-size: 1rem;
+            color: var(--gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            .factor { grid-template-columns: 1fr; gap: 15px; }
+            .calculator { padding: 30px; }
+            .result-percentage { font-size: 3.5rem; }
+            .activity-item { grid-template-columns: 1fr; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Восстановление доступа к аккаунту EXBO</h1>
+            <p class="subtitle">Исследование системы верификации владельцев аккаунтов EXBO</p>
+            
+            <nav class="section-nav">
+                <ul class="section-nav-list">
+                    <li><a href="#section-principle">1. Принцип</a></li>
+                    <li><a href="#section-api">2. API</a></li>
+                    <li><a href="#section-factors">3. Факторы</a></li>
+                    <li><a href="#section-hwid-technical">3.5. HWID</a></li>
+                    <li><a href="#section-api-responses">4. Ответы API</a></li>
+                    <li><a href="#section-financial">5. Чеки</a></li>
+                    <li><a href="#section-activity">6. Активность</a></li>
+                    <li><a href="#section-bindings">7. Привязки</a></li>
+                    <li><a href="#section-support-form">8. Форма</a></li>
+                    <li><a href="#section-calculator">9. Калькулятор</a></li>
+                    <li><a href="#section-recommendations">10. Рекомендации</a></li>
+                    <li><a href="#section-acknowledgments">11. Благодарности</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Раздел 1: Принцип работы -->
+        <section id="section-principle">
+            <h2>1. Принцип определения владельца</h2>
+            
+            <div class="content-block">
+                <div class="content-block-title">Многофакторная система верификации</div>
+                <p class="content-block-text">
+                    Система EXBO использует <strong>взвешенный многофакторный анализ</strong> для определения владельца аккаунта. 
+                    Каждый фактор имеет свой «вес» в процентах, и суммарный балл определяет вероятность принадлежности аккаунта.
+                </p>
+                <p class="content-block-text">
+                    При обращении в службу поддержки система автоматически собирает технические данные из лаунчера и сравнивает 
+                    их с историческими данными аккаунта. <strong>Порог успешной верификации составляет 75%</strong> — при достижении 
+                    этого значения аккаунт считается принадлежащим заявителю.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Ключевой вывод исследования</div>
+                <p class="info-box-text">
+                    Наиболее критичным фактором является <strong>HWID (Hardware ID)</strong> — уникальный идентификатор оборудования,
+                    который невозможно изменить без замены физических компонентов компьютера. Совпадение HWID даёт 40% успеха верификации.
+                </p>
+                <p class="info-box-text" style="margin-top: 15px;">
+                    <strong>Анти-спуфинг защита:</strong> HWID генерируется из серийных номеров компонентов компьютера.
+                    Любая попытка подмены обнаруживается и приводит к ошибке верификации.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 2: API эндпоинты -->
+        <section id="section-api">
+            <h2>2. Ключевые эндпоинты API для определения владельца</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Эндпоинты верификации владельца аккаунта</div>
+                <p class="content-block-text">
+                    Система EXBO использует несколько эндпоинтов для многофакторной проверки владения аккаунтом.
+                    Каждый эндпоинт предоставляет уникальные данные для верификации.
+                </p>
+            </div>
+
+            <h4>1. Авторизация по логину/паролю (POW_BCRYPT)</h4>
+            <div class="endpoint">
+                <div>
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-url">http://launcher.stalcraft.net/auth</span>
+                </div>
+                <div class="endpoint-description">
+                    <strong>Первичная авторизация.</strong> Вызывается при обычном вводе логина и пароля в лаунчере.
+                    Нужен для получения хеша пароля (bcrypt).
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Параметры запроса:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">state=true
+login=ExampleUser2024
+pass=TempPass123
+bootstrap=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+hwid=x7y8z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5
+id=11223344-5566-7788-99aa-bbccddeeff00
+protocol_version=3
+start=true</pre>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Пример ответа:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">{
+  "type": "POW_BCRYPT",
+  "licenseAccepted": false,
+  "secretHash": "a1b2c3d4e5.f6g7h8i9",
+  "trueLogin": null,
+  "session": null,
+  "token": null
+}</pre>
+                <p style="margin-top: 15px; font-size: 0.95rem;"><strong>Ключевые поля:</strong> <code>type: POW_BCRYPT</code>, <code>secretHash</code> (соль для хеширования пароля)</p>
+            </div>
+
+            <h4>2. Авторизация с хешем пароля (GOOGLE_AUTH / OK)</h4>
+            <div class="endpoint">
+                <div>
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-url">http://launcher.stalcraft.net/auth</span>
+                </div>
+                <div class="endpoint-description">
+                    <strong>Второй запрос авторизации.</strong> Если на аккаунте нет 2FA, происходит вход в лаунчер.
+                    Если есть 2FA — требуется код из приложения или почты.
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Параметры запроса:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">state=true
+login=ExampleUser2024
+pass=TempPass123
+passhash=a1b2$c3d4$e5f6$.g7h8i9j0k1l2m3n4o5p6
+bootstrap=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+hwid=x7y8z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5
+id=11223344-5566-7788-99aa-bbccddeeff00
+protocol_version=3</pre>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Пример ответа (успех):</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">{
+  "type": "GOOGLE_AUTH",
+  "licenseAccepted": true,
+  "trueLogin": "ExampleUser2024",
+  "session": null,
+  "token": null
+}</pre>
+                <p style="margin-top: 15px; font-size: 0.95rem;"><strong>Ключевые поля:</strong> <code>type: GOOGLE_AUTH</code>, <code>licenseAccepted: true</code>, <code>trueLogin</code></p>
+            </div>
+
+            <h4>3. Авторизация с 2FA кодом (приложение/почта)</h4>
+            <div class="endpoint">
+                <div>
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-url">http://launcher.stalcraft.net/auth</span>
+                </div>
+                <div class="endpoint-description">
+                    <strong>Авторизация с двухфакторной аутентификацией.</strong> Требуется код из Google Authenticator или почты.
+                    При успехе выдаётся сессионный токен.
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Параметры запроса:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">secret=123456
+login=ExampleUser2024
+id=11223344-5566-7788-99aa-bbccddeeff00
+protocol_version=3
+hwid=x7y8z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5</pre>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Пример ответа (успех):</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">{
+  "type": "OK",
+  "licenseAccepted": true,
+  "trueLogin": "ExampleUser2024",
+  "session": "aabbccdd-1122-3344-5566-778899aabbcc",
+  "token": "aabbccdd-1122-3344-5566-778899aabbcc",
+  "mailAbbreviation": "exa***@proton.me"
+}</pre>
+                <p style="margin-top: 15px; font-size: 0.95rem;"><strong>Ключевые поля:</strong> <code>type: OK</code>, <code>session</code>, <code>token</code>, <code>mailAbbreviation</code> (маска почты)</p>
+            </div>
+
+            <h4>4. Автовход в лаунчер (сессия из реестра)</h4>
+            <div class="endpoint">
+                <div>
+                    <span class="endpoint-method">GET</span>
+                    <span class="endpoint-url">http://launcher.stalcraft.net/auth</span>
+                </div>
+                <div class="endpoint-description">
+                    <strong>Автоматический вход при запуске лаунчера.</strong> Вызывается при наличии сессии в реестре.
+                    HWID проверяется — при несовпадении возвращается <code>WRONG_HWID</code>.
+                </div>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Параметры запроса:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">state=false
+login=ExampleUser2024
+session=aabbccdd-1122-3344-5566-778899aabbcc
+bootstrap=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+hwid=x7y8z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z5
+id=11223344-5566-7788-99aa-bbccddeeff00
+protocol_version=3
+start=true</pre>
+                <p style="margin-top: 15px; font-size: 0.9rem;"><strong>Пример ответа (успех):</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 15px; margin: 10px 0; font-size: 0.8rem; overflow-x: auto; font-family: 'Courier New', monospace;">{
+  "type": "OK",
+  "licenseAccepted": true,
+  "trueLogin": "ExampleUser2024",
+  "session": "aabbccdd-1122-3344-5566-778899aabbcc",
+  "token": "aabbccdd-1122-3344-5566-778899aabbcc",
+  "mailAbbreviation": "exa***@proton.me"
+}</pre>
+                <p style="margin-top: 15px; font-size: 0.95rem;"><strong>Ключевые поля:</strong> <code>type: OK</code>, <code>licenseAccepted: true</code>, <code>session</code>, <code>token</code></p>
+                <p style="margin-top: 15px; font-size: 0.95rem; color: var(--gray);"><strong>Важно:</strong> При несовпадении HWID возвращается ошибка <code>WRONG_HWID</code> — это критический фактор верификации (40% веса).</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Как используется для определения владельца</div>
+                <p class="info-box-text">
+                    <strong>HWID</strong> — анти-спуфинг защита, несовпадение = отказ (−40%).<br>
+                    <strong>session/token</strong> — UUID сессионный токен, хранится в реестре для авто-входа.<br>
+                    <strong>mailAbbreviation</strong> — маска привязанной почты (например, exa***@proton.me).<br>
+                    <strong>licenseAccepted</strong> — подтверждение принятия лицензионного соглашения.<br>
+                    <strong>trueLogin</strong> — подтверждённый логин аккаунта.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 3: Факторы верификации -->
+        <section id="section-factors">
+            <h2>3. Факторы верификации</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Данные реестра Windows как фактор верификации</div>
+                <p class="content-block-text">
+                    Лаунчер EXBO сохраняет данные в реестре Windows для авто-авторизации. 
+                    Эти данные используются системой для подтверждения владения аккаунтом.
+                </p>
+            </div>
+
+            <h4>Пример 1: Реестр с сессионным токеном</h4>
+            <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto; font-family: 'Courier New', monospace;">[HKEY_CURRENT_USER\Software\EXBO]
+"EXBO_AUTO_AUTH"="true"
+"EXBO_LOGIN"="Gettrix"
+"EXBO_SESSION"="7fc60433-4c17-4cdf-b7de-b03a4ed44e51"
+"root"="C:\\Users\\user\\AppData\\Roaming\\EXBO"</pre>
+            <p class="content-block-text" style="margin-top: 15px;">
+                <strong>Данные реестра:</strong><br>
+                <code>EXBO_LOGIN</code>: <strong>Gettrix</strong><br>
+                <code>EXBO_SESSION</code>: <strong>7fc60433-4c17-4cdf-b7de-b03a4ed44e51</strong><br>
+                <code>EXBO_AUTO_AUTH</code>: <strong>true</strong> (авто-вход включён)<br>
+                <code>root</code>: <strong>C:\Users\user\AppData\Roaming\EXBO</strong> (путь к лаунчеру)
+            </p>
+
+            <h4>Пример 2: Реестр с другим аккаунтом</h4>
+            <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto; font-family: 'Courier New', monospace;">[HKEY_CURRENT_USER\Software\EXBO]
+"EXBO_AUTO_AUTH"="true"
+"EXBO_LOGIN"="ShadowHunter92"
+"EXBO_SESSION"="2a8b5e71-9d42-4a8f-93e1-7c5b8e2a4f69"
+"root"="C:\\Users\\player\\AppData\\Roaming\\EXBO"</pre>
+            <p class="content-block-text" style="margin-top: 15px;">
+                <strong>Данные реестра:</strong><br>
+                <code>EXBO_LOGIN</code>: <strong>ShadowHunter92</strong><br>
+                <code>EXBO_SESSION</code>: <strong>2a8b5e71-9d42-4a8f-93e1-7c5b8e2a4f69</strong><br>
+                <code>EXBO_AUTO_AUTH</code>: <strong>true</strong> (авто-вход включён)<br>
+                <code>root</code>: <strong>C:\Users\player\AppData\Roaming\EXBO</strong> (путь к лаунчеру)
+            </p>
+
+            <div class="info-box">
+                <div class="info-box-title">Как используется реестр для верификации</div>
+                <p class="info-box-text">
+                    <strong>EXBO_LOGIN</strong> — логин аккаунта (открытый текст).<br>
+                    <strong>EXBO_SESSION</strong> — UUID сессионного токена для авто-входа.<br>
+                    <strong>EXBO_AUTO_AUTH</strong> — флаг авто-авторизации (true/false).<br>
+                    <strong>root</strong> — путь к папке лаунчера (содержит кеш, логи).<br>
+                    При смене аккаунта данные в реестре обновляются — это фиксируется в истории.
+                </p>
+            </div>
+
+            <div class="factor">
+                <div class="factor-weight">40%</div>
+                <div>
+                    <div class="factor-name">HWID (Hardware ID)</div>
+                    <p class="factor-desc">
+                        Уникальный идентификатор оборудования, генерируемый на основе серийных номеров компонентов
+                        (материнская плата, жёсткий диск, сетевая карта). Имеет анти-спуфинг защиту — попытка подмены
+                        обнаруживается и блокируется.
+                    </p>
+                    <p class="factor-desc" style="margin-top: 12px; font-size: 0.95rem;">
+                        <strong>Почему невозможно изменить:</strong> Серийные номера компонентов зашиты на аппаратном уровне
+                        (в BIOS/UEFI материнской платы, микрокоде процессора, прошивке накопителя). Изменение требует
+                        физического перепрограммирования чипов или замены оборудования.
+                    </p>
+                    <span class="factor-changeable no">Не изменяется</span>
+                </div>
+            </div>
+
+            <div class="factor">
+                <div class="factor-weight">25%</div>
+                <div>
+                    <div class="factor-name">Сессионный токен</div>
+                    <p class="factor-desc">
+                        UUID-токен, выдаваемый после успешной аутентификации и сохраняемый в реестре системы. 
+                        Используется для авто-входа и подтверждения владения в последующих запросах. 
+                        Истекает через определённое время без активности.
+                    </p>
+                    <span class="factor-changeable">Изменяется (сброс)</span>
+                </div>
+            </div>
+
+            <div class="factor">
+                <div class="factor-weight">20%</div>
+                <div>
+                    <div class="factor-name">Хеш пароля (bcrypt)</div>
+                    <p class="factor-desc">
+                        Пароль хешируется по алгоритму bcrypt с солью. Система сравнивает предоставленный хеш 
+                        с сохранённым в базе данных. При смене пароля старый хеш становится недействительным.
+                    </p>
+                    <span class="factor-changeable">Изменяется (смена пароля)</span>
+                </div>
+            </div>
+
+            <div class="factor">
+                <div class="factor-weight">10%</div>
+                <div>
+                    <div class="factor-name">Хеш bootstrap.jar</div>
+                    <p class="factor-desc">
+                        Хеш файла загрузчика лаунчера. Используется для проверки целостности клиентского ПО. 
+                        Может измениться при обновлении лаунчера или переустановке игры.
+                    </p>
+                    <span class="factor-changeable">Изменяется (обновление)</span>
+                </div>
+            </div>
+
+            <div class="factor">
+                <div class="factor-weight">5%</div>
+                <div>
+                    <div class="factor-name">Паттерны трафика</div>
+                    <p class="factor-desc">
+                        Анализ временных задержек между запросами, частоты обращений к API и последовательности 
+                        действий. Автоматизированные скрипты обнаруживаются по неестественным паттернам.
+                    </p>
+                    <span class="factor-changeable">Изменяется (поведение)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Раздел 3.5: Технические детали HWID -->
+        <section id="section-hwid-technical">
+            <h2>3.5. Технические детали HWID</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Что такое HWID</div>
+                <p class="content-block-text">
+                    HWID (Hardware ID) — это уникальный идентификатор оборудования, который генерируется при первом запуске лаунчера
+                    и привязывается к аккаунту. Этот идентификатор используется как один из основных факторов верификации владельца.
+                </p>
+            </div>
+
+            <h4>Как формируется HWID</h4>
+            <div class="content-block">
+                <p class="content-block-text">
+                    Лаунчер собирает информацию о компонентах системы через стандартные API Windows (WMI — Windows Management Instrumentation):
+                </p>
+                <ul style="margin-left: 25px; font-size: 1.05rem; line-height: 1.8;">
+                    <li>Идентификатор процессора (CPU ID)</li>
+                    <li>Серийный номер материнской платы</li>
+                    <li>Серийные номера дисков (HDD/SSD)</li>
+                    <li>MAC-адреса сетевых адаптеров</li>
+                </ul>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    Полученные данные комбинируются и хешируются. Итоговый HWID отправляется на сервер при каждой авторизации.
+                </p>
+            </div>
+
+            <h4>Почему HWID критически важен</h4>
+            <div class="info-box">
+                <div class="info-box-title">Ключевые факты</div>
+                <p class="info-box-text">
+                    <strong>1. Вес в верификации:</strong> HWID составляет 40% от общего балла верификации — это самый весомый фактор.
+                </p>
+                <p class="info-box-text" style="margin-top: 12px;">
+                    <strong>2. Невозможность изменения:</strong> Серийные номера компонентов зашиты на аппаратном уровне.
+                    Изменение требует замены физических компонентов компьютера.
+                </p>
+                <p class="info-box-text" style="margin-top: 12px;">
+                    <strong>3. Анти-спуфинг:</strong> Лаунчер использует несколько источников данных для сбора информации о
+                    компонентах. Расхождение между источниками детектируется и приводит к ошибке верификации.
+                </p>
+                <p class="info-box-text" style="margin-top: 12px;">
+                    <strong>4. Детекция виртуализации:</strong> Запуск в виртуальной машине определяется
+                    по сигнатурам оборудования и может вызвать ошибку HWID.
+                </p>
+            </div>
+
+            <div class="info-box" style="border-left-color: #f44336; background: #ffebee;">
+                <div class="info-box-title" style="color: #c62828;">Важно</div>
+                <p class="info-box-text">
+                    При смене оборудования (материнской платы, процессора, дисков) HWID изменится. В этом случае для
+                    восстановления доступа потребуется предоставить дополнительные доказательства владения аккаунтом:
+                    кассовые чеки, доступ к привязанной почте, историю транзакций.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 4: Таблица ответов API -->
+        <section id="section-api-responses">
+            <h2>4. Сценарии ответов API при авторизации</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Типы ответов эндпоинта /auth</div>
+                <p class="content-block-text">
+                    Эндпоинт аутентификации возвращает разные типы ответов в зависимости от стадии авторизации
+                    и статуса владения аккаунтом. Каждый тип ответа содержит поля для верификации.
+                </p>
+            </div>
+
+            <h4>Сценарий 1: Первичная авторизация (запрос хеша пароля)</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> <code>GET /auth?state=true&login=LoginUser&pass=Qwerty123123&bootstrap=...&hwid=...&id=...&protocol_version=3&start=true</code></p>
+                <p class="content-block-text"><strong>Ответ типа POW_BCRYPT:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "type": "POW_BCRYPT",
+  "licenseAccepted": false,
+  "secretHash": "asdasdasdasd.1231231",
+  "timeLeft": -1,
+  "untilChangingFinish": null
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> Сервер подтверждает существование логина и возвращает соль для хеширования пароля. <code>licenseAccepted: false</code> — ожидается на этом этапе.</p>
+            </div>
+
+            <h4>Сценарий 2: Авторизация с хешем пароля (без 2FA)</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> <code>GET /auth?state=true&login=LoginUser&pass=Qwerty123123&passhash=asd3$d2sa$a1bc$.12312asd12313asd213.123dsa&bootstrap=...&hwid=...&id=...&protocol_version=3</code></p>
+                <p class="content-block-text"><strong>Ответ при успехе (GOOGLE_AUTH):</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "type": "GOOGLE_AUTH",
+  "licenseAccepted": true,
+  "trueLogin": "UserLogin",
+  "timeLeft": -1
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> <code>licenseAccepted: true</code> подтверждает владение. <code>trueLogin</code> возвращает подтверждённый логин аккаунта.</p>
+            </div>
+
+            <h4>Сценарий 3: Авторизация с 2FA (Google Authenticator / Email)</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> <code>GET /auth?secret=123456&login=UserLogin&id=...&protocol_version=3</code></p>
+                <p class="content-block-text"><strong>Ответ при успехе (OK):</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "type": "OK",
+  "licenseAccepted": true,
+  "trueLogin": "UserLogin",
+  "session": "12345678-1234-1234-1234-123456789012",
+  "token": "12345678-1234-1234-1234-123456789012",
+  "mailAbbreviation": "art***@gmail.com"
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> Полная авторизация с выдачей сессионных токенов. <code>mailAbbreviation</code> показывает маску привязанной почты.</p>
+            </div>
+
+            <h4>Сценарий 4: Авто-вход по сессии</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> <code>GET /auth?state=false&login=UserLogin&session=12345678-1234-1234-1234-123456789012&bootstrap=...&hwid=...&protocol_version=3&id=...&start=true</code></p>
+                <p class="content-block-text"><strong>Ответ при успехе:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "type": "OK",
+  "licenseAccepted": true,
+  "trueLogin": "UserLogin",
+  "session": "12345678-1234-1234-1234-123456789012",
+  "token": "12345678-1234-1234-1234-123456789012"
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> Сессионный токен подтверждает владение без ввода пароля. Сессия хранится в реестре.</p>
+            </div>
+
+            <h4>Сценарий 5: Ошибка HWID (анти-спуфинг)</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> с несовпадающим HWID</p>
+                <p class="content-block-text"><strong>Ответ при ошибке:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "type": "WRONG_HWID",
+  "licenseAccepted": false,
+  "genericError": "Hardware ID mismatch"
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> HWID не совпадает с зарегистрированным — блокировка авторизации. Критичный фактор (40%).</p>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Примечание:</strong> При смене оборудования (материнская плата, процессор, диски) HWID изменяется.
+                    В этом случае для восстановления доступа потребуется обратиться в службу поддержки и предоставить
+                    дополнительные доказательства владения аккаунтом.
+                </p>
+            </div>
+
+            <h4>Сценарий 6: Получение списка персонажей</h4>
+            <div class="content-block">
+                <p class="content-block-text" style="margin-bottom: 15px;"><strong>Запрос:</strong> <code>GET /characters/list?login=User&session=abcde1234567890098765432112345678900987654321234567890253D&distributor=EXBO</code></p>
+                <p class="content-block-text"><strong>Ответ при успехе:</strong></p>
+                <pre style="background: var(--black); color: var(--white); padding: 20px; margin: 15px 0; font-size: 0.85rem; overflow-x: auto;">{
+  "accepted_legal_version": "v8_ru_launcher",
+  "characters": [...],
+  "characters_limit": 10,
+  "had_characters": true,
+  "reserved_names": []
+}</pre>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Верификация:</strong> <code>had_characters: true</code> подтверждает наличие персонажей в истории аккаунта.</p>
+            </div>
+
+            <h4>Сводная таблица полей верификации</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Поле ответа</th>
+                        <th>Значение для владельца</th>
+                        <th>Важность</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td><code>"OK"</code> — полная авторизация</td>
+                        <td>Критическая</td>
+                    </tr>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td><code>"GOOGLE_AUTH"</code> — требуется 2FA</td>
+                        <td>Высокая</td>
+                    </tr>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td><code>"POW_BCRYPT"</code> — запрос хеша пароля</td>
+                        <td>Средняя</td>
+                    </tr>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td><code>"WRONG_HWID"</code> — ошибка HWID</td>
+                        <td>Критическая (отказ)</td>
+                    </tr>
+                    <tr>
+                        <td><code>licenseAccepted</code></td>
+                        <td><code>true</code> — лицензия принята</td>
+                        <td>Высокая</td>
+                    </tr>
+                    <tr>
+                        <td><code>session + token</code></td>
+                        <td>UUID формат — валидная сессия</td>
+                        <td>Высокая</td>
+                    </tr>
+                    <tr>
+                        <td><code>trueLogin</code></td>
+                        <td>Логин аккаунта подтверждён</td>
+                        <td>Средняя</td>
+                    </tr>
+                    <tr>
+                        <td><code>mailAbbreviation</code></td>
+                        <td>Маска email (art***@gmail.com)</td>
+                        <td>Низкая</td>
+                    </tr>
+                    <tr>
+                        <td><code>had_characters</code></td>
+                        <td><code>true</code> — персонажи существовали</td>
+                        <td>Средняя</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Раздел 5: Финансовые доказательства -->
+        <section id="section-financial">
+            <h2>5. Финансовые доказательства владения</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Кассовый чек как подтверждение владения</div>
+                <p class="content-block-text">
+                    Кассовые чеки содержат уникальные фискальные данные, которые невозможно подделать.
+                    Система поддержки EXBO принимает чеки как <strong>доказательство владения</strong> с высоким уровнем доверия.
+                </p>
+            </div>
+
+            <h4>Примеры кассовых чеков по хронологии</h4>
+
+            <div class="content-block">
+                <div class="content-block-title">2026 год — Пополнение счёта</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>КАССОВЫЙ ЧЕК №30377 / Приход</strong><br>
+                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                    </div>
+                    <div class="receipt-row"><span>РН ККТ:</span><span>0009757206000690</span></div>
+                    <div class="receipt-row"><span>ФН:</span><span>7384440901165610</span></div>
+                    <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030112063</span></div>
+                    <div class="receipt-row"><span>Номер заказа:</span><span>#4825235</span></div>
+                    <div class="receipt-row"><span>Дата выдачи:</span><span>08 января 2026 г. в 00:28</span></div>
+                    <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraftx.ru/</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Лицензия на Stalcraft: X (10 команд)</span><span>10 300,00</span></div>
+                    <div class="receipt-row"><span>10 шт × 1 030,00</span><span>10 300,00</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГ:</span><span>10 300,00</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Фискальный признак:</span><span>2624809742</span></div>
+                    <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
+                    <div class="receipt-row"><span>Email покупателя:</span><span>user20260001@proton.me</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Свежая покупка лицензии Stalcraft: X на 10 команд. Номер заказа #4825235 сверяется с историей транзакций аккаунта.
+                    Email <strong>user20260001@proton.me</strong> должен совпадать с привязанной почтой.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">2025 год — Пополнение счёта</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>КАССОВЫЙ ЧЕК №142358 / Приход</strong><br>
+                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                    </div>
+                    <div class="receipt-row"><span>РН ККТ:</span><span>0009263618035836</span></div>
+                    <div class="receipt-row"><span>ФН:</span><span>7384440900699172</span></div>
+                    <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030114081</span></div>
+                    <div class="receipt-row"><span>Номер заказа:</span><span>#4250636</span></div>
+                    <div class="receipt-row"><span>Дата выдачи:</span><span>10 ноября 2025 г. в 14:52</span></div>
+                    <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraft.net</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Лицензия на Stalcraft: X</span><span>1 500,00</span></div>
+                    <div class="receipt-row"><span>1 шт × 1 500,00</span><span>1 500,00</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГ:</span><span>1 500,00</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Фискальный признак:</span><span>883202832</span></div>
+                    <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
+                    <div class="receipt-row"><span>Email покупателя:</span><span>user20250001@proton.me</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Покупка лицензии Stalcraft: X. Номер заказа #4250636 сверяется с историей транзакций аккаунта.
+                    Email <strong>user20250001@proton.me</strong> должен совпадать с привязанной почтой.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">2024 год — Платёж через Xsolla</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>ПЛАТЁЖ XSOLLA № 1552695913</strong><br>
+                        STALCRAFT · Xsolla (USA), Inc.
+                    </div>
+                    <div class="receipt-row"><span>Номер транзакции:</span><span>1552695920</span></div>
+                    <div class="receipt-row"><span>Дата платежа:</span><span>04.12.2024 16:24</span></div>
+                    <div class="receipt-row"><span>Страна:</span><span>Украина</span></div>
+                    <div class="receipt-row"><span>Пользователь:</span><span>User2024</span></div>
+                    <div class="receipt-row"><span>Email:</span><span>user20240001@gmail.com</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Цифровой продукт</span><span>950,00 ₽</span></div>
+                    <div class="receipt-row"><span>К оплате:</span><span>₴ 391,22</span></div>
+                    <div class="receipt-row"><span>Включая 20% НДС:</span><span>₴ 65.21</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГО:</span><span>₴ 391,22</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Компания:</span><span>Xsolla (USA), Inc.</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Калифорния, Шерман Оукс, б-р Вентура 15260</span></div>
+                    <div class="receipt-row"><span>ИНН:</span><span>880020907</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Платёж через платёжную систему Xsolla (декабрь 2024).
+                    Номер транзакции <strong>1552695920</strong> и email <strong>user20240001@gmail.com</strong> сверяются с историей платежей.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">2023 год — Пополнение счёта</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>КАССОВЫЙ ЧЕК № 75 / Приход</strong><br>
+                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                    </div>
+                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037044</span></div>
+                    <div class="receipt-row"><span>ФН №:</span><span>9961440300710346</span></div>
+                    <div class="receipt-row"><span>ФД №:</span><span>110496</span></div>
+                    <div class="receipt-row"><span>Смена:</span><span>193</span></div>
+                    <div class="receipt-row"><span>Дата:</span><span>08.02.2023 11:20</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>1 500,00</span></div>
+                    <div class="receipt-row"><span>1 500 ед × 1.00</span><span>1 500,00</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГО:</span><span>1 500,00</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Безналичными:</span><span>1 500,00</span></div>
+                    <div class="receipt-row"><span>Email покупателя:</span><span>user20230001@gmail.com</span></div>
+                    <div class="receipt-row"><span>ФП:</span><span>961301953</span></div>
+                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Пополнение счёта (февраль 2023).
+                    Сумма <strong>1 500 ₽</strong> и email <strong>user20230001@gmail.com</strong> сверяются с историей транзакций.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">2022 год — Пополнение счёта</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>КАССОВЫЙ ЧЕК № 15 / Приход</strong><br>
+                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                    </div>
+                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037051</span></div>
+                    <div class="receipt-row"><span>ФН №:</span><span>9961440300710353</span></div>
+                    <div class="receipt-row"><span>ФД №:</span><span>24670</span></div>
+                    <div class="receipt-row"><span>Смена:</span><span>74</span></div>
+                    <div class="receipt-row"><span>Дата:</span><span>27.10.2022 13:31</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>165,00</span></div>
+                    <div class="receipt-row"><span>165 ед × 1.00</span><span>165,00</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГО:</span><span>165,00</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Безналичными:</span><span>165,00</span></div>
+                    <div class="receipt-row"><span>Email покупателя:</span><span>user20220001@gmail.com</span></div>
+                    <div class="receipt-row"><span>ФП:</span><span>1617244804</span></div>
+                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Пополнение счёта (октябрь 2022).
+                    Сумма <strong>165 ₽</strong> и email <strong>user20220001@gmail.com</strong> сверяются с историей транзакций.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">2021 год  — Пополнение счёта</div>
+                <div class="receipt-example">
+                    <div class="receipt-header">
+                        <strong>КАССОВЫЙ ЧЕК № 32 / Приход</strong><br>
+                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                    </div>
+                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037037</span></div>
+                    <div class="receipt-row"><span>ФН №:</span><span>9287440300899815</span></div>
+                    <div class="receipt-row"><span>ФД №:</span><span>26590</span></div>
+                    <div class="receipt-row"><span>Смена:</span><span>158</span></div>
+                    <div class="receipt-row"><span>Дата:</span><span>23.06.2021 11:45</span></div>
+                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>6 823.00</span></div>
+                    <div class="receipt-row"><span>6 823 ед × 1.00</span><span>6 823.00</span></div>
+                    <div class="receipt-total">
+                        <div class="receipt-row"><span>ИТОГО:</span><span>6 823.00</span></div>
+                    </div>
+                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                    <div class="receipt-row"><span>Безналичными:</span><span>6 823.00</span></div>
+                    <div class="receipt-row"><span>Email покупателя:</span><span>user20210001@proton.me</span></div>
+                    <div class="receipt-row"><span>ФП:</span><span>177335407</span></div>
+                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Проверка:</strong> Раннее пополнение счёта (июнь 2021) подтверждает долгосрочное владение аккаунтом.
+                    Сумма <strong>6 823 ₽</strong> и email <strong>user20210001@proton.me</strong> сверяются с историей транзакций.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Какие данные из чеков важны</div>
+                <p class="info-box-text">
+                    <strong>Номер заказа</strong> — связывает покупку с аккаунтом EXBO.<br>
+                    <strong>Дата и время</strong> — сверяется с историей входа в аккаунт.<br>
+                    <strong>Фискальный признак и ФН</strong> — подтверждают легальность чека через ФНС.<br>
+                    <strong>Email покупателя</strong> — должен совпадать с привязанной почтой аккаунта.<br>
+                    <strong>Сумма</strong> — подтверждает размер транзакции в истории платежей.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 6: История активности аккаунта -->
+        <section id="section-activity">
+            <h2>6. История активности аккаунта (веб-клиент)</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Парсинг данных веб-клиента EXBO</div>
+                <p class="content-block-text">
+                    Веб-клиент EXBO сохраняет детальную историю всех изменений аккаунта.
+                    Эти данные используются для верификации при восстановлении доступа.
+                </p>
+            </div>
+
+            <h4>Детальный лог активности (пример данных веб-клиента)</h4>
+            <div class="activity-log">
+                <div class="activity-item">
+                    <div class="activity-date">Входы в лаунчер</div>
+                    <div class="activity-details">Несколько входов (2026) · EXBO Launcher · Разные города</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-date">Смена пароля</div>
+                    <div class="activity-details">Несколько раз (2024-2026) · AndroidOS, Windows 10</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-date">Смена почты</div>
+                    <div class="activity-details">Несколько раз (2024) · Windows 10 · Разные регионы</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-date">Подключение соц. сетей</div>
+                    <div class="activity-details">Несколько подключений (2023-2025) · Windows 10, AndroidOS</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-date">Смена статуса 2FA</div>
+                    <div class="activity-details">Несколько изменений (2024-2026) · AndroidOS, Windows 10</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-date">Восстановление пароля</div>
+                    <div class="activity-details">Несколько раз (2023-2024) · iOS, Windows 10</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Что анализируется в истории</div>
+                <p class="info-box-text">
+                    <strong>Геолокация по IP</strong> — частые смены городов/стран вызывают подозрения.<br>
+                    <strong>Устройства</strong> — постоянство ОС и браузера указывает на владельца.<br>
+                    <strong>Время изменений</strong> — паттерны активности (например, вечерние часы).<br>
+                    <strong>Частота изменений</strong> — множественные смены пароля/почты за короткий период — красный флаг.
+                </p>
+            </div>
+
+            <h4>Детальный лог активности (пример данных веб-клиента)</h4>
+            
+            <div class="content-block">
+                <div class="content-block-title">Входы в лаунчер</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">05.03.2026, 19:15</div>
+                        <div class="activity-details">EXBO Launcher · Moscow · IP 72.62.63.198</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">20.02.2026, 14:22</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 178.46.115.201</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">19.02.2026, 09:45</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">17.02.2026, 21:18</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">17.02.2026, 08:33</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">16.02.2026, 23:47</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">16.02.2026, 16:29</div>
+                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Смена почтового адреса</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 21:18</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 08:47</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.08.2024, 23:15</div>
+                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">27.08.2024, 19:56</div>
+                        <div class="activity-details">Windows 10.0 · Frankfurt am Main · IP 94.131.109.151</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.07.2024, 13:22</div>
+                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">07.06.2024, 15:41</div>
+                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Смена пароля</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">16.02.2026, 11:33</div>
+                        <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">11.10.2025, 16:47</div>
+                        <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 188.17.187.215</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">12.06.2025, 09:25</div>
+                        <div class="activity-details">AndroidOS 10 · IP 79.127.142.168</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 08:47</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.08.2024, 22:51</div>
+                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">27.08.2024, 20:38</div>
+                        <div class="activity-details">Windows 10.0 · Polyarnyye Zori · IP 91.210.207.68</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.07.2024, 12:14</div>
+                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Подключение социальных сетей</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">22.03.2025, 17:15</div>
+                        <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 5.166.37.71</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">22.03.2025, 17:08</div>
+                        <div class="activity-details">AndroidOS 10 · IP 176.227.215.85</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">04.09.2024, 20:33</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">04.09.2024, 20:21</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 21:25</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 21:19</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 18:52</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">30.12.2023, 19:28</div>
+                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">30.12.2023, 19:11</div>
+                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Смена статуса 2FA</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">16.02.2026, 11:42</div>
+                        <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">01.09.2024, 20:15</div>
+                        <div class="activity-details">AndroidOS 10 · Moscow · IP 176.15.253.178</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 08:38</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.09.2024, 08:35</div>
+                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.08.2024, 23:47</div>
+                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.08.2024, 23:38</div>
+                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">28.07.2024, 11:25</div>
+                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">07.06.2024, 15:58</div>
+                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Восстановление пароля</div>
+                <div class="activity-log">
+                    <div class="activity-item">
+                        <div class="activity-date">23.08.2024, 16:45</div>
+                        <div class="activity-details">iOS 18.0 · IP 89.113.158.112</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">07.06.2024, 15:58</div>
+                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">17.12.2023, 14:55</div>
+                        <div class="activity-details">iOS 17.1.2 · Novosibirsk · IP 95.104.185.28</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.11.2023, 11:42</div>
+                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-date">02.11.2023, 10:58</div>
+                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Что анализируется в истории</div>
+                <p class="info-box-text">
+                    <strong>Геолокация по IP</strong> — частые смены городов/стран вызывают подозрения.<br>
+                    <strong>Устройства</strong> — постоянство ОС и браузера указывает на владельца.<br>
+                    <strong>Время изменений</strong> — паттерны активности (например, вечерние часы).<br>
+                    <strong>Частота изменений</strong> — множественные смены пароля/почты за короткий период — красный флаг.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 7: Привязки и безопасность -->
+        <section id="section-bindings">
+            <h2>7. Привязки и дополнительные факторы</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Социальные сети как доказательство владения</div>
+                <p class="content-block-text">
+                    Привязанные социальные сети служат дополнительным фактором верификации.
+                    Доступ к этим аккаунтам подтверждает владение и добавляет вес к верификации.
+                </p>
+            </div>
+
+            <h4>Таблица привязок и их вес</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Тип привязки</th>
+                        <th>Вес в верификации</th>
+                        <th>Как используется</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ВКонтакте</strong></td>
+                        <td>+8%</td>
+                        <td>Вход через VK ID, проверка номера телефона</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google</strong></td>
+                        <td>+8%</td>
+                        <td>Вход через OAuth 2.0, проверка email в домене gmail.com</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <div class="info-box-title">Примечание</div>
+                <p class="info-box-text">
+                    Привязка социальных сетей используется как дополнительный фактор верификации при восстановлении доступа.
+                    При обращении в поддержку укажите, какие социальные сети привязаны к вашему аккаунту.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 8: Форма поддержки и эволюция проверок -->
+        <section id="section-support-form">
+            <h2>8. Форма обращения в поддержку и эволюция проверок</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Эволюция требований службы поддержки EXBO</div>
+                <p class="content-block-text">
+                    Требования службы поддержки EXBO к верификации владельца аккаунта менялись с 2021 по 2026 год.
+                    Ниже представлена хронология изменений в процедурах восстановления доступа.
+                </p>
+            </div>
+
+            <h4>2021 год — Базовая верификация с VK</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
+                <p class="content-block-text"><strong>Требования:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создайте новый аккаунт EXBO;</li>
+                    <li>Авторизуйтесь на exbo.ru;</li>
+                    <li>Привяжите VK к новому аккаунту;</li>
+                    <li>Запустите лаунчер и STALCRAFT;</li>
+                    <li>Создайте персонажа и зайдите на сервер;</li>
+                    <li>Заполните форму обращения.</li>
+                </ol>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                        <input type="text" value="ShadowHunter92" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                        <input type="text" value="ShadowHunter92_New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
+                        <input type="email" value="newemail2021@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+            </div>
+
+            <h4>2021 год — Верификация через пополнение</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты (расширенная)</p>
+                <p class="content-block-text"><strong>Требования:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создайте новый аккаунт EXBO;</li>
+                    <li>Привяжите VK;</li>
+                    <li>Запустите лаунчер и STALCRAFT;</li>
+                    <li>Создайте персонажа;</li>
+                    <li>Пополните счёт на минимальную сумму тем же способом, что использовался на старом аккаунте;</li>
+                    <li>Отправьте чеки с обоих аккаунтов.</li>
+                </ol>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (4 поля):</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                        <input type="text" value="PhoenixRider" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                        <input type="text" value="PhoenixRider2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Чеки пополнения:</label>
+                        <div style="font-size: 0.9rem; color: var(--gray);">• Чек старого аккаунта: № 15/2021<br>• Чек нового аккаунта: № 16/2021</div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
+                        <input type="email" value="phoenix.mail2021@gmail.com" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+                <p class="content-block-text"><strong>Примечание:</strong> Предоставляется только новый чек (от нового аккаунта).</p>
+            </div>
+
+            <h4>2022 год — Отключение Google Authenticator</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>Тип обращения:</strong> Отключение 2FA</p>
+                <p class="content-block-text"><strong>Требования:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создайте новый аккаунт EXBO;</li>
+                    <li>Запустите лаунчер и STALCRAFT;</li>
+                    <li>Создайте персонажа и пройдите обучение до Болот;</li>
+                    <li>Заполните форму обращения.</li>
+                </ol>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                        <input type="text" value="NightWolf2000" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                        <input type="text" value="NightWolf2000Back" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
+                        <input type="text" value="WolfBolt" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+            </div>
+
+            <h4>2023 год — Стандартная процедура</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
+                <p class="content-block-text"><strong>Требования:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создайте новый аккаунт EXBO;</li>
+                    <li>Авторизуйтесь на exbo.ru;</li>
+                    <li>Привяжите VK;</li>
+                    <li>Запустите лаунчер и STALCRAFT;</li>
+                    <li>Создайте персонажа и зайдите на сервер;</li>
+                    <li>Заполните форму обращения.</li>
+                </ol>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                        <input type="text" value="CyberStorm77" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                        <input type="text" value="CyberStorm77New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
+                        <input type="email" value="cyberstorm.new@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+            </div>
+
+            <h4>2023–2026 годы — Текущая процедура (exbo.support / ОИБ)</h4>
+            <div class="content-block">
+                <div class="info-box" style="border-left-color: var(--black); background: var(--white);">
+                    <div class="info-box-title">Важное изменение с 2024 года</div>
+                    <p class="info-box-text">
+                        С 2024 года техническая поддержка EXBO <strong>не принимает обращения ВКонтакте</strong>.
+                        Все заявки на восстановление доступа подаются исключительно через официальный портал
+                        <strong>exbo.support</strong>. До 2024 года обращения принимались через ОИБ (Отдел Игровой Безопасности).
+                    </p>
+                </div>
+                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты / Восстановление доступа</p>
+                <p class="content-block-text"><strong>Канал обращения:</strong> Портал exbo.support (2024–2026) / ОИБ (2023)</p>
+                <p class="content-block-text"><strong>Требования:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создайте новый аккаунт EXBO;</li>
+                    <li>Авторизуйтесь в лаунчере / на exbo.ru;</li>
+                    <li>Запустите STALCRAFT / STALCRAFT: X;</li>
+                    <li>Создайте персонажа и пройдите обучение до локации «Болота»;</li>
+                    <li>Предоставьте данные нового аккаунта в ответе на обращение.</li>
+                </ol>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Важно:</strong> Не использовать «_» и «-» в логине. Только буквы и цифры.</p>
+            </div>
+
+            <h4>Форма создания обращения на exbo.support (2024–2026)</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>Шаг 1: Выбор категории обращения</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Учётная запись «EXBO»</label>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор категории обращения:*</label>
+                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            <option>Учётная запись «EXBO»</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор характера обращения:*</label>
+                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            <option>Утеряна электронная почта</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Тема обращения:*</label>
+                        <input type="text" placeholder="Опишите возникшую проблему в нескольких словах" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Платформа, которую Вы используете для игры:*</label>
+                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            <option>EXBO</option>
+                            <option>Steam</option>
+                            <option>VkPlay</option>
+                            <option>4game</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Логин учётной записи «EXBO»:*</label>
+                        <input type="text" value="ExampleUser2024" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 2: Описание проблемы</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Текст обращения:*</label>
+                    <textarea readonly rows="5" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray); font-family: inherit; font-size: 1rem;">Прошу сменить электронную почту на моём аккаунте. Имею доступ к старым чекам пополнения.</textarea>
+                </div>
+                <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 3: Прикрепление файлов (необязательно)</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Скриншоты / Документы:</label>
+                    <div style="font-size: 0.95rem; color: var(--gray); padding: 15px; background: var(--gray-light); border: 1px dashed var(--gray);">
+                        📎 screenshot_account_info.png (245 KB)<br>
+                        📎 old_purchase_proof.png (189 KB)
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--gray);">
+                        <strong>Примечание:</strong> Прикрепление файлов необязательно. Кассовые чеки больше не являются основным требованием для восстановления доступа.
+                    </p>
+                </div>
+            </div>
+
+            <h4>Требования после создания обращения</h4>
+            <div class="content-block">
+                <p class="content-block-text"><strong>После подачи заявки поддержка может запросить:</strong></p>
+                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                    <li>Создать новый аккаунт EXBO;</li>
+                    <li>Авторизоваться на exbo.ru;</li>
+                    <li>Привязать VK к новому аккаунту;</li>
+                    <li>Запустить лаунчер и STALCRAFT;</li>
+                    <li>Создать персонажа и зайти на сервер;</li>
+                    <li>Пройти обучение до локации «Болота»;</li>
+                    <li>Предоставить данные нового аккаунта в ответе на обращение.</li>
+                </ol>
+            </div>
+
+            <h4>Пример обращения через exbo.support (октябрь 2024)</h4>
+            <div class="content-block" style="background: var(--gray-light);">
+                <p class="content-block-text"><strong>Заявитель:</strong> Shwed2000</p>
+                <p class="content-block-text"><strong>Дата:</strong> 18.10.2024 13:31:50</p>
+                <p class="content-block-text"><strong>Тикет:</strong> 	#404337</p>
+                <p class="content-block-text"><strong>Статус:</strong> Требуется код подтверждения</p>
+                <p class="content-block-text"><strong>Канал:</strong> exbo.support (не VK!)</p>
+                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                <p class="content-block-text"><strong>Данные из формы:</strong></p>
+                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                        <input type="text" value="ExampleUser2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                        <input type="text" value="ExampleUserVerify" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
+                        <input type="text" value="VerifyCharacter" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
+                        <input type="email" value="newemail.example@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                    </div>
+                </div>
+                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                <p class="content-block-text"><strong>Ответ поддержки (шаг 1):</strong></p>
+                <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
+                    <em>Добрый день!</em><br><br>
+                    Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
+                    Мы можем сменить электронную почту на Вашей учётной записи «EXBO».<br><br>
+                    Для этого просим Вас проделать следующие действия:<br>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Создайте новую учётную запись «EXBO»;</li>
+                        <li>Авторизуйтесь в лаунчере «EXBO»;</li>
+                        <li>Запустите игру «STALCRAFT»;</li>
+                        <li>Создайте нового игрового персонажа;</li>
+                        <li>Пройдите обучение до локации «Болота».</li>
+                    </ol>
+                    После этого просим отправить нам следующую информацию:<br>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Логин учётной записи «EXBO», на которой необходимо сменить электронную почту;</li>
+                        <li>Логин новой учётной записи «EXBO», на которой был создан персонаж и пройдено обучение;</li>
+                        <li>Имя персонажа, на котором было пройдено обучение до локации «Болота»;</li>
+                        <li>Новый адрес электронной почты, который не привязан к другой учётной записи «EXBO».</li>
+                    </ul>
+                    При создании новой учётной записи «EXBO» просим не вводить в поле логина знаки нижнего подчёркивания («_») или дефис («-»). Рекомендуем использовать исключительно буквы и цифры.<br><br>
+                    Все перечисленные действия необходимы для подтверждения Вашей личности и того факта, что данная учётная запись «EXBO» действительно принадлежит Вам, а не кому-то другому.
+                </div>
+                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                <p class="content-block-text"><strong>Ответ поддержки (шаг 2 — код подтверждения):</strong></p>
+                <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
+                    <em>Добрый день!</em><br><br>
+                    Благодарим Вас за предоставленные данные.<br><br>
+                    <strong>В течение пяти минут на Вашу почту в игре «STALCRAFT: X» придёт специальное письмо с кодом.</strong> Нам необходимо получить этот код.<br><br>
+                    Пожалуйста, проделайте следующие действия:<br>
+                    <ol style="margin-left: 20px; margin-top: 10px;">
+                        <li>Авторизуйтесь под новой учётной записью.</li>
+                        <li>Запустите игру «STALCRAFT: X» и зайдите на сервер.</li>
+                        <li>Нажмите клавишу «ESC» для открытия главного меню.</li>
+                        <li>Нажмите на значок письма в левом верхнем углу.</li>
+                        <li>В списке откройте письмо от нашей системы.</li>
+                        <li>Скопируйте и отправьте код в данное обращение.</li>
+                    </ol>
+                    Просим отправить полученный код в течение <strong>48 часов</strong> с момента его получения.<br><br>
+                    Если по какой-то причине Вы не смогли получить код, то сообщите нам об этом в данном обращении.
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Примечание</div>
+                    <p class="info-box-text">
+                        Код подтверждения отправляется внутриигровой почтой в STALCRAFT: X. Это дополнительная мера защиты для подтверждения владения аккаунтом.
+                    </p>
+                </div>
+            </div>
+
+            <h4>Варианты ответов поддержки</h4>
+            
+            <div class="content-block">
+                <div class="content-block-title">Отказ в смене почты</div>
+                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                    <p style="font-size: 0.95rem; line-height: 1.8;">
+                        <strong>Здравствуйте!</strong><br><br>
+                        Сообщаем, что в смене электронной почты на учётной записи «EXBO» отказано.<br><br>
+                        Результаты внутренней проверки показали, что Вы не являетесь владельцем учётной записи, которая указана в форме.<br><br>
+                        Напоминаем, что владельцем учётной записи признаётся то лицо, которое её зарегистрировало.<br><br>
+                        В случае получения данных от чужой учётной записи, независимо от способа, будь то передача, дарение или покупка, право владения ею остаётся исключительно за пользователем, который её зарегистрировал.<br><br>
+                        В соответствии с пунктом 4.1.2 действующего лицензионного соглашения Вы не вправе использовать учётную запись другого пользователя.<br><br>
+                        <strong>Пункт 4.1.2 лицензионного соглашения:</strong><br>
+                        <em>4.1. Пользователь не вправе осуществлять следующие действия в отношении Игры:</em><br>
+                        <em>4.1.2. Получать доступ к Учётным Записям (Аккаунтам) Пользователей независимо от причины, а также каким-либо образом предоставлять доступ другому Пользователю к своей Учётной Записи (Аккаунту) на время или на неограниченный срок, включая, но не ограничиваясь, их обмен, продажу и передачу.</em><br><br>
+                        С уважением,<br>
+                        Отдел Игровой Безопасности.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Причины отказа</div>
+                    <p class="info-box-text">
+                        <strong>Критические факторы (отказ при несовпадении):</strong> HWID не совпадает с зарегистрированным (−40%), оригинальная электронная почта недоступна (−10%).<br><br>
+                        <strong>Дополнительные факторы:</strong> расхождение данных о первых пополнениях (чеки не предоставлены или не совпадают, −12%), невозможность назвать точные даты создания аккаунта (−6%), провал верификации (код из внутриигровой почты не отправлен или неверный), отсутствие персонажей в истории аккаунта (−5%).<br><br>
+                        <strong>Результат:</strong> суммарный балл верификации <75% = отказ в восстановлении доступа.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Одобрение смены почты</div>
+                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                    <p style="font-size: 0.95rem; line-height: 1.8;">
+                        <strong>Здравствуйте!</strong><br><br>
+                        Сообщаем, что заявка на смену электронной почты на учётной записи «EXBO» одобрена.<br><br>
+                        Мы сменили электронную почту на ту, которую Вы указали в заявке ранее. Теперь Вам необходимо восстановить пароль от учётной записи «EXBO».<br><br>
+                        <strong>Инструкция по восстановлению пароля:</strong><br>
+                        <ol style="margin-left: 20px; margin-top: 10px;">
+                            <li>Перейдите на официальный сайт компании «EXBO» и в правом верхнем углу нажмите кнопку «Войти».</li>
+                            <li>Откроется новое окно. Нажмите кнопку «Забыли пароль», которая располагается в центре.</li>
+                            <li>Введите логин учётной записи или адрес электронной почты. Нажмите кнопку «Отправить».</li>
+                            <li>Введите код подтверждения из приложения двухфакторной аутентификации и нажмите кнопку «Отправить».</li>
+                            <li>Пройдите проверку на робота, нажав на серый квадратик у надписи «Я не робот».</li>
+                            <li>Откройте электронную почту и отыщите на ней письмо от компании «EXBO».</li>
+                            <li>Откройте данное письмо. В нём нажмите кнопку «Сбросить пароль» или перейдите по ссылке ниже.</li>
+                            <li>В новом окне введите новый пароль, после этого повторите его. Нажмите кнопку «Отправить».</li>
+                        </ol>
+                        После этого пароль будет изменён. Запишите его или сохраните в менеджере паролей браузера.<br><br>
+                        <strong>Рекомендации по безопасности:</strong><br>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Включите двухфакторную аутентификацию (2FA);</li>
+                            <li>Привяжите аккаунты социальных сетей (VK, Google);</li>
+                            <li>Сохраните резервные коды восстановления;</li>
+                            <li>Не передавайте данные от аккаунта третьим лицам.</li>
+                        </ul>
+                        С уважением,<br>
+                        Отдел Игровой Безопасности.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Условия одобрения</div>
+                    <p class="info-box-text">
+                        <strong>Обязательные факторы:</strong> совпадение HWID (40%), доступ к оригинальной электронной почте (10%), предоставление кассовых чеков с первых пополнений (12%).<br><br>
+                        <strong>Дополнительные факторы:</strong> точные даты создания аккаунта и первых транзакций (+6%), успешное прохождение верификации (код из внутриигровой почты STALCRAFT: X), наличие персонажей в истории аккаунта (+5%), привязка социальных сетей VK/Google (+8% каждая).<br><br>
+                        <strong>Порог верификации:</strong> ≥75% для успешного восстановления доступа.
+                    </p>
+                </div>
+            </div>
+
+            <h4>Апелляция на решение поддержки</h4>
+            <div class="content-block">
+                <div class="content-block-title">Обжалование решения Отдела Игровой Безопасности</div>
+                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                    <p style="font-size: 0.95rem; line-height: 1.8;">
+                        <strong>Добрый день!</strong><br><br>
+                        Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
+                        Если Вы считаете, что сотрудник отдела игровой безопасности допустил ошибку при рассмотрении Вашей ситуации, Вам следует обратиться по следующему адресу электронной почты:<br><br>
+                        <strong style="font-size: 1.1rem; color: var(--black);">complaints@exbo.ru</strong><br><br>
+                        С уважением,<br>
+                        Команда Поддержки.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Когда стоит обращаться</div>
+                    <p class="info-box-text">
+                        <strong>Основания для апелляции:</strong> вы уверены в совпадении HWID, имеете доступ к оригинальной почте, предоставили все чеки и точные даты, успешно прошли верификацию, но получили отказ.<br><br>
+                        <strong>Срок рассмотрения:</strong> обычно 3-30 рабочих дней.<br><br>
+                        <strong>Что указать в письме:</strong> номер тикета, логин аккаунта, краткое описание ситуации, приложенные доказательства (чеки, скриншоты).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Раздел 9: Калькулятор -->
+        <section id="section-calculator">
+            <h2>9. Калькулятор шанса восстановления</h2>
+
+            <div class="calculator">
+                <div class="calculator-title">Расчёт вероятности восстановления аккаунта</div>
+                <p class="calculator-subtitle">
+                    Отметьте все факторы, которые совпадают с данными вашего аккаунта
+                </p>
+
+                <!-- Основные факторы -->
+                <div class="calculator-section">
+                    <div class="calculator-section-title">Основные факторы верификации</div>
+                    <div class="calculator-grid">
+                        <div class="calculator-item">
+                            <label for="hwid">HWID совпадает с оригинальным</label>
+                            <select id="hwid" onchange="calculate()">
+                                <option value="40">Да, то же самое оборудование</option>
+                                <option value="0">Нет, компьютер изменился</option>
+                            </select>
+                            <span class="calculator-item-note">Наиболее критичный фактор (40%)</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label for="session">Сессионный токен доступен</label>
+                            <select id="session" onchange="calculate()">
+                                <option value="25">Да, есть в реестре/лаунчере</option>
+                                <option value="0">Нет, истёк или удалён</option>
+                            </select>
+                            <span class="calculator-item-note">Сохранён после последнего входа</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label for="password">Пароль известен</label>
+                            <select id="password" onchange="calculate()">
+                                <option value="20">Да, помню пароль</option>
+                                <option value="0">Нет, пароль утерян</option>
+                            </select>
+                            <span class="calculator-item-note">Точный пароль от аккаунта</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label for="bootstrap">Bootstrap.jar не изменялся</label>
+                            <select id="bootstrap" onchange="calculate()">
+                                <option value="10">Да, лаунчер не обновлялся</option>
+                                <option value="0">Нет, было обновление/переустановка</option>
+                            </select>
+                            <span class="calculator-item-note">Хеш файла загрузчика</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Финансовые доказательства -->
+                <div class="calculator-section">
+                    <div class="calculator-section-title">Финансовые доказательства</div>
+                    <div class="calculator-grid">
+                        <div class="calculator-item">
+                            <label>Есть кассовый чек с покупкой</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="receipt" onchange="calculate()">
+                                <span>Чек с номером заказа и датой</span>
+                            </div>
+                            <span class="calculator-item-note">+12% — фискальные данные</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>История транзакций в банке</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="bank" onchange="calculate()">
+                                <span>Выписка с карты о платеже EXBO</span>
+                            </div>
+                            <span class="calculator-item-note">+8% — совпадение суммы и даты</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Несколько покупок в истории</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="multiPurchase" onchange="calculate()">
+                                <span>2 и более чека/транзакции</span>
+                            </div>
+                            <span class="calculator-item-note">+5% — дополнительная история</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- История активности -->
+                <div class="calculator-section">
+                    <div class="calculator-section-title">История активности</div>
+                    <div class="calculator-grid">
+                        <div class="calculator-item">
+                            <label>Доступ к истории изменений</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="activityLog" onchange="calculate()">
+                                <span>Можете описать последние изменения</span>
+                            </div>
+                            <span class="calculator-item-note">+6% — знание истории</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Постоянный IP/город</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="ipHistory" onchange="calculate()">
+                                <span>Входы из одного города/провайдера</span>
+                            </div>
+                            <span class="calculator-item-note">+5% — геолокация</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Постоянное устройство</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="deviceHistory" onchange="calculate()">
+                                <span>Входы с одной ОС/браузера</span>
+                            </div>
+                            <span class="calculator-item-note">+4% — паттерн устройства</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Привязки -->
+                <div class="calculator-section">
+                    <div class="calculator-section-title">Привязки</div>
+                    <div class="calculator-grid">
+                        <div class="calculator-item">
+                            <label>Доступ к email аккаунта</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="email" onchange="calculate()">
+                                <span>Можете войти в привязанную почту</span>
+                            </div>
+                            <span class="calculator-item-note">+10% — основной канал связи</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Привязан Google аккаунт</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="google" onchange="calculate()">
+                                <span>Вход через Google доступен</span>
+                            </div>
+                            <span class="calculator-item-note">+8% — OAuth верификация</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Привязан ВКонтакте</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="vk" onchange="calculate()">
+                                <span>Вход через VK доступен</span>
+                            </div>
+                            <span class="calculator-item-note">+8% — VK ID верификация</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>Есть персонажи в игре</label>
+                            <div class="checkbox-label">
+                                <input type="checkbox" id="characters" onchange="calculate()">
+                                <span>Можете назвать никнеймы/локации</span>
+                            </div>
+                            <span class="calculator-item-note">+5% — игровая история</span>
+                        </div>
+
+                        <div class="calculator-item">
+                            <label>IP в том же диапазоне</label>
+                            <select id="ip" onchange="calculate()">
+                                <option value="5">Да, тот же провайдер/город</option>
+                                <option value="0">Нет, другой регион/IP</option>
+                            </select>
+                            <span class="calculator-item-note">Текущий IP адрес</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-result">
+                    <div class="result-percentage" id="resultPercent">0%</div>
+                    <div class="result-label">Шанс на восстановление аккаунта</div>
+                    <div class="result-bar">
+                        <div class="result-bar-fill" id="resultBar" style="width: 0%"></div>
+                    </div>
+                    <div class="result-text" id="resultText">
+                        Выберите параметры выше для расчёта
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Раздел 10: Рекомендации -->
+        <section id="section-recommendations">
+            <h2>10. Рекомендации по восстановлению</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Если HWID изменился (переезд, новый ПК)</div>
+                <p class="content-block-text">
+                    <strong>Проблема:</strong> При смене оборудования вы теряете 40% верификационного веса. 
+                    Максимально возможный балл в этом случае — 60%, что ниже порога в 75%.
+                </p>
+                <p class="content-block-text">
+                    <strong>Решение:</strong> Компенсируйте потерю HWID через дополнительные доказательства:
+                </p>
+                <ul style="margin-left: 25px; font-size: 1.05rem; line-height: 1.8;">
+                    <li>Кассовые чеки с номерами заказов (+12% каждый)</li>
+                    <li>Банковские выписки о транзакциях (+8%)</li>
+                    <li>Доступ к привязанной почте (+10%)</li>
+                    <li>Вход через Google/VK (+8% каждый)</li>
+                    <li>Точные даты изменений в истории аккаунта (+6%)</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Важно</div>
+                <p class="info-box-text">
+                    Не пытайтесь использовать скрипты для автоматизации запросов к API. 
+                    Система обнаруживает неестественные паттерны трафика и может заблокировать 
+                    обращение в поддержку. Все действия выполняйте вручную через официальный лаунчер.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Совет</div>
+                <p class="info-box-text">
+                    Сохраняйте кассовые чеки в течение <strong>5 лет</strong> — они доступны на электронной почте,
+                    которая была привязана к аккаунту в момент пополнения. Скриншоты из личного кабинета EXBO
+                    с историей покупок также принимаются как доказательство.
+                </p>
+            </div>
+        </section>
+
+        <!-- Раздел 11: Благодарности -->
+        <section id="section-acknowledgments">
+            <h2>11. Благодарности и источники</h2>
+
+            <div class="content-block">
+                <div class="content-block-title">Источники информации</div>
+                <p class="content-block-text">
+                    Данное исследование основано на анализе работы лаунчера EXBO и документации по API Stalcraft.
+                </p>
+            </div>
+
+            <div class="content-block">
+                <div class="content-block-title">Благодарности</div>
+                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>Art3mLapa / unofficial-stalcraft-api</strong><br>
+                        <a href="https://github.com/Art3mLapa/unofficial-stalcraft-api" target="_blank" style="color: var(--black); text-decoration: underline;">github.com/Art3mLapa/unofficial-stalcraft-api</a><br>
+                        <span style="color: var(--gray); font-size: 0.95rem;">Документация по API лаунчера Stalcraft, используемая для понимания структуры запросов и ответов.</span>
+                    </p>
+                    <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                    <p style="font-size: 1.05rem; line-height: 1.8;">
+                        <strong>HTTP Debugger</strong><br>
+                        <span style="color: var(--gray); font-size: 0.95rem;">Инструмент для анализа и поиска HTTP/HTTPS запросов, используемый для перехвата и изучения сетевых запросов лаунчера.</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Отказ от ответственности</div>
+                <p class="info-box-text">
+                    Данное исследование предоставлено исключительно в информационных целях. Все данные являются вымышленными и используются для демонстрации работы системы верификации. 
+                    Авторы не несут ответственности за использование данной информации.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Исследование системы верификации аккаунтов EXBO · 2026</p>
+            <p style="margin-top: 10px;">(c) Nyrokume · 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        function calculate() {
+            let total = 0;
+
+            // Select values
+            total += parseInt(document.getElementById('hwid').value);
+            total += parseInt(document.getElementById('session').value);
+            total += parseInt(document.getElementById('password').value);
+            total += parseInt(document.getElementById('bootstrap').value);
+            total += parseInt(document.getElementById('ip').value);
+
+            // Checkbox values
+            const checkboxes = {
+                'receipt': 12,
+                'bank': 8,
+                'multiPurchase': 5,
+                'activityLog': 6,
+                'ipHistory': 5,
+                'deviceHistory': 4,
+                'email': 10,
+                'google': 8,
+                'vk': 8,
+                'characters': 5
+            };
+
+            for (const [id, value] of Object.entries(checkboxes)) {
+                if (document.getElementById(id).checked) {
+                    total += value;
+                }
+            }
+
+            // Cap at 100
+            if (total > 100) total = 100;
+
+            // Update display
+            const percentElement = document.getElementById('resultPercent');
+            const barElement = document.getElementById('resultBar');
+            const textElement = document.getElementById('resultText');
+
+            percentElement.textContent = total + '%';
+            barElement.style.width = total + '%';
+
+            // Update text based on score
+            if (total >= 75) {
+                textElement.textContent = 'Высокий шанс восстановления! Вы набрали достаточный балл для верификации владельца. Обратитесь в поддержку с собранными доказательствами.';
+                textElement.style.opacity = '1';
+            } else if (total >= 50) {
+                textElement.textContent = 'Средний шанс. Рекомендуется предоставить дополнительные доказательства: кассовые чеки, банковские выписки, доступ к соц. сетям и email.';
+                textElement.style.opacity = '1';
+            } else {
+                textElement.textContent = 'Низкий шанс. Без совпадения HWID восстановление крайне затруднено. Соберите максимум доказательств: чеки, выписки, доступ к почте и соц. сетям, историю активности.';
+                textElement.style.opacity = '1';
+            }
+        }
+
+        // Initialize on load
+        calculate();
+    </script>
+</body>
+</html>
