@@ -34,6 +34,7 @@ xdg-open index.html
 
 ```
 EXBO-account-checker/
+├──/docs
 ├── index.html      # Основная страница с исследованием
 └── README.md       # Документация проекта
 ```
