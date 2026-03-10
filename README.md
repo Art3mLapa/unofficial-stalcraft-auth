@@ -1,6 +1,7 @@
 # EXBO Account Checker — Исследование восстановления аккаунта
 
 Интерактивная веб-страница с исследованием системы верификации владельцев аккаунтов EXBO (Stalcraft).
+https://github.com/Nyrokume/Exbo-security/blob/main/docs/index.html
 
 ## 📋 Описание
 
