@@ -470,6 +470,71 @@
             .result-percentage { font-size: 3.5rem; }
             .activity-item { grid-template-columns: 1fr; gap: 5px; }
         }
+
+        /* Collapsible details/summary */
+        details {
+            margin: 20px 0;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        details:hover {
+            border-color: var(--black);
+        }
+
+        details[open] {
+            border-color: var(--black);
+        }
+
+        summary {
+            background: var(--gray-light);
+            padding: 18px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        summary:hover {
+            background: #e5e5e5;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.3s;
+        }
+
+        details[open] summary::after {
+            content: '−';
+        }
+
+        details[open] summary {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .details-content {
+            padding: 25px;
+            background: var(--white);
+        }
+
+        .details-content > .receipt-example,
+        .details-content > .content-block,
+        .details-content > div {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -1018,197 +1083,279 @@ start=true</pre>
                     Кассовые чеки содержат уникальные фискальные данные, которые невозможно подделать.
                     Система поддержки EXBO принимает чеки как <strong>доказательство владения</strong> с высоким уровнем доверия.
                 </p>
+                <p class="content-block-text" style="margin-top: 15px;">
+                    <strong>Почему чеки важны:</strong> каждый чек содержит фискальный признак, номер заказа, дату и время операции,
+                    а также email покупателя. Эти данные сверяются с историей транзакций аккаунта EXBO.
+                    Совпадение всех параметров даёт <strong>+12%</strong> к верификации владельца.
+                </p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">Где найти чеки</div>
+                <p class="info-box-text">
+                    <strong>Электронная почта:</strong> чеки приходят на email, привязанный к аккаунту в момент покупки.<br>
+                    <strong>Личный кабинет EXBO:</strong> раздел «История покупок» на exbo.ru.<br>
+                    <strong>Банковская выписка:</strong> история операций в приложении банка (дополнительное доказательство, +8%).
+                </p>
+            </div>
+
+            <div class="content-block" style="margin-top: 25px;">
+                <div class="content-block-title">Какие данные проверяются</div>
+                <table style="margin-top: 15px;">
+                    <thead>
+                        <tr>
+                            <th>Данные в чеке</th>
+                            <th>Для чего используется</th>
+                            <th>Вес в верификации</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Номер заказа</strong></td>
+                            <td>Связывает покупку с аккаунтом EXBO</td>
+                            <td>Критично</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Дата и время</strong></td>
+                            <td>Сверяется с историей входа в аккаунт</td>
+                            <td>Высокий</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Фискальный признак (ФП)</strong></td>
+                            <td>Подтверждает легальность чека через ФНС</td>
+                            <td>Высокий</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email покупателя</strong></td>
+                            <td>Должен совпадать с привязанной почтой</td>
+                            <td>Критично</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Сумма платежа</strong></td>
+                            <td>Подтверждает размер транзакции</td>
+                            <td>Средний</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ИНН продавца</strong></td>
+                            <td>Подтверждает оплату в пользу EXBO</td>
+                            <td>Средний</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-box" style="border-left-color: #4CAF50; background: #e8f5e9;">
+                <div class="info-box-title" style="color: #2E7D32;">💡 Совет</div>
+                <p class="info-box-text">
+                    <strong>Сохраняйте чеки в течение 5 лет</strong> — они доступны на электронной почте, которая была привязана к аккаунту в момент пополнения.
+                    Скриншоты из личного кабинета Банка с историей покупок также принимаются как доказательство.
+                </p>
             </div>
 
             <h4>Примеры кассовых чеков по хронологии</h4>
+            <p class="content-block-text" style="margin-bottom: 20px; color: var(--gray);">
+                Нажмите на заголовок года, чтобы просмотреть пример чека:
+            </p>
 
-            <div class="content-block">
-                <div class="content-block-title">2026 год — Пополнение счёта</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>КАССОВЫЙ ЧЕК №30377 / Приход</strong><br>
-                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+            <details>
+                <summary>2026 год — Пополнение счёта</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>КАССОВЫЙ ЧЕК №30377 / Приход</strong><br>
+                            ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                        </div>
+                        <div class="receipt-row"><span>РН ККТ:</span><span>0009757206000690</span></div>
+                        <div class="receipt-row"><span>ФН:</span><span>7384440901165610</span></div>
+                        <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030112063</span></div>
+                        <div class="receipt-row"><span>Номер заказа:</span><span>#4825235</span></div>
+                        <div class="receipt-row"><span>Дата выдачи:</span><span>08 января 2026 г. в 00:28</span></div>
+                        <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraftx.ru/</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Лицензия на Stalcraft: X (10 команд)</span><span>10 300,00</span></div>
+                        <div class="receipt-row"><span>10 шт × 1 030,00</span><span>10 300,00</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГ:</span><span>10 300,00</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Фискальный признак:</span><span>2624809742</span></div>
+                        <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
+                        <div class="receipt-row"><span>Email покупателя:</span><span>user20260001@proton.me</span></div>
                     </div>
-                    <div class="receipt-row"><span>РН ККТ:</span><span>0009757206000690</span></div>
-                    <div class="receipt-row"><span>ФН:</span><span>7384440901165610</span></div>
-                    <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030112063</span></div>
-                    <div class="receipt-row"><span>Номер заказа:</span><span>#4825235</span></div>
-                    <div class="receipt-row"><span>Дата выдачи:</span><span>08 января 2026 г. в 00:28</span></div>
-                    <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraftx.ru/</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Лицензия на Stalcraft: X (10 команд)</span><span>10 300,00</span></div>
-                    <div class="receipt-row"><span>10 шт × 1 030,00</span><span>10 300,00</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГ:</span><span>10 300,00</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Фискальный признак:</span><span>2624809742</span></div>
-                    <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
-                    <div class="receipt-row"><span>Email покупателя:</span><span>user20260001@proton.me</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Свежая покупка лицензии Stalcraft: X на 10 команд. Номер заказа #4825235 сверяется с историей транзакций аккаунта.
+                        Email <strong>user20260001@proton.me</strong> должен совпадать с привязанной почтой.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Свежая покупка лицензии Stalcraft: X на 10 команд. Номер заказа #4825235 сверяется с историей транзакций аккаунта.
-                    Email <strong>user20260001@proton.me</strong> должен совпадать с привязанной почтой.
-                </p>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">2025 год — Пополнение счёта</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>КАССОВЫЙ ЧЕК №142358 / Приход</strong><br>
-                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+            <details>
+                <summary>2025 год — Пополнение счёта</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>КАССОВЫЙ ЧЕК №142358 / Приход</strong><br>
+                            ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                        </div>
+                        <div class="receipt-row"><span>РН ККТ:</span><span>0009263618035836</span></div>
+                        <div class="receipt-row"><span>ФН:</span><span>7384440900699172</span></div>
+                        <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030114081</span></div>
+                        <div class="receipt-row"><span>Номер заказа:</span><span>#4250636</span></div>
+                        <div class="receipt-row"><span>Дата выдачи:</span><span>10 ноября 2025 г. в 14:52</span></div>
+                        <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraft.net</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Лицензия на Stalcraft: X</span><span>1 500,00</span></div>
+                        <div class="receipt-row"><span>1 шт × 1 500,00</span><span>1 500,00</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГ:</span><span>1 500,00</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Фискальный признак:</span><span>883202832</span></div>
+                        <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
+                        <div class="receipt-row"><span>Email покупателя:</span><span>user20250001@proton.me</span></div>
                     </div>
-                    <div class="receipt-row"><span>РН ККТ:</span><span>0009263618035836</span></div>
-                    <div class="receipt-row"><span>ФН:</span><span>7384440900699172</span></div>
-                    <div class="receipt-row"><span>Заводской номер ККТ:</span><span>1992320030114081</span></div>
-                    <div class="receipt-row"><span>Номер заказа:</span><span>#4250636</span></div>
-                    <div class="receipt-row"><span>Дата выдачи:</span><span>10 ноября 2025 г. в 14:52</span></div>
-                    <div class="receipt-row"><span>Место расчета:</span><span>https://stalcraft.net</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Москва, ул. Бутлерова, 17Б</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Лицензия на Stalcraft: X</span><span>1 500,00</span></div>
-                    <div class="receipt-row"><span>1 шт × 1 500,00</span><span>1 500,00</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГ:</span><span>1 500,00</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Фискальный признак:</span><span>883202832</span></div>
-                    <div class="receipt-row"><span>ОФД:</span><span>Платформа ОФД (Эвотор)</span></div>
-                    <div class="receipt-row"><span>Email покупателя:</span><span>user20250001@proton.me</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Покупка лицензии Stalcraft: X. Номер заказа #4250636 сверяется с историей транзакций аккаунта.
+                        Email <strong>user20250001@proton.me</strong> должен совпадать с привязанной почтой.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Покупка лицензии Stalcraft: X. Номер заказа #4250636 сверяется с историей транзакций аккаунта.
-                    Email <strong>user20250001@proton.me</strong> должен совпадать с привязанной почтой.
-                </p>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">2024 год — Платёж через Xsolla</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>ПЛАТЁЖ XSOLLA № 1552695913</strong><br>
-                        STALCRAFT · Xsolla (USA), Inc.
+            <details>
+                <summary>2024 год — Платёж через Xsolla</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>ПЛАТЁЖ XSOLLA № 1552695913</strong><br>
+                            STALCRAFT · Xsolla (USA), Inc.
+                        </div>
+                        <div class="receipt-row"><span>Номер транзакции:</span><span>1552695920</span></div>
+                        <div class="receipt-row"><span>Дата платежа:</span><span>04.12.2024 16:24</span></div>
+                        <div class="receipt-row"><span>Страна:</span><span>Украина</span></div>
+                        <div class="receipt-row"><span>Пользователь:</span><span>User2024</span></div>
+                        <div class="receipt-row"><span>Email:</span><span>user20240001@gmail.com</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Цифровой продукт</span><span>950,00 ₽</span></div>
+                        <div class="receipt-row"><span>К оплате:</span><span>₴ 391,22</span></div>
+                        <div class="receipt-row"><span>Включая 20% НДС:</span><span>₴ 65.21</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГО:</span><span>₴ 391,22</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Компания:</span><span>Xsolla (USA), Inc.</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Калифорния, Шерман Оукс, б-р Вентура 15260</span></div>
+                        <div class="receipt-row"><span>ИНН:</span><span>880020907</span></div>
                     </div>
-                    <div class="receipt-row"><span>Номер транзакции:</span><span>1552695920</span></div>
-                    <div class="receipt-row"><span>Дата платежа:</span><span>04.12.2024 16:24</span></div>
-                    <div class="receipt-row"><span>Страна:</span><span>Украина</span></div>
-                    <div class="receipt-row"><span>Пользователь:</span><span>User2024</span></div>
-                    <div class="receipt-row"><span>Email:</span><span>user20240001@gmail.com</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Цифровой продукт</span><span>950,00 ₽</span></div>
-                    <div class="receipt-row"><span>К оплате:</span><span>₴ 391,22</span></div>
-                    <div class="receipt-row"><span>Включая 20% НДС:</span><span>₴ 65.21</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГО:</span><span>₴ 391,22</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Компания:</span><span>Xsolla (USA), Inc.</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Калифорния, Шерман Оукс, б-р Вентура 15260</span></div>
-                    <div class="receipt-row"><span>ИНН:</span><span>880020907</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Платёж через платёжную систему Xsolla (декабрь 2024).
+                        Номер транзакции <strong>1552695920</strong> и email <strong>user20240001@gmail.com</strong> сверяются с историей платежей.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Платёж через платёжную систему Xsolla (декабрь 2024).
-                    Номер транзакции <strong>1552695920</strong> и email <strong>user20240001@gmail.com</strong> сверяются с историей платежей.
-                </p>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">2023 год — Пополнение счёта</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>КАССОВЫЙ ЧЕК № 75 / Приход</strong><br>
-                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+            <details>
+                <summary>2023 год — Пополнение счёта</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>КАССОВЫЙ ЧЕК № 75 / Приход</strong><br>
+                            ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                        </div>
+                        <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037044</span></div>
+                        <div class="receipt-row"><span>ФН №:</span><span>9961440300710346</span></div>
+                        <div class="receipt-row"><span>ФД №:</span><span>110496</span></div>
+                        <div class="receipt-row"><span>Смена:</span><span>193</span></div>
+                        <div class="receipt-row"><span>Дата:</span><span>08.02.2023 11:20</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                        <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>1 500,00</span></div>
+                        <div class="receipt-row"><span>1 500 ед × 1.00</span><span>1 500,00</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГО:</span><span>1 500,00</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Безналичными:</span><span>1 500,00</span></div>
+                        <div class="receipt-row"><span>Email покупателя:</span><span>user20230001@gmail.com</span></div>
+                        <div class="receipt-row"><span>ФП:</span><span>961301953</span></div>
+                        <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
                     </div>
-                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037044</span></div>
-                    <div class="receipt-row"><span>ФН №:</span><span>9961440300710346</span></div>
-                    <div class="receipt-row"><span>ФД №:</span><span>110496</span></div>
-                    <div class="receipt-row"><span>Смена:</span><span>193</span></div>
-                    <div class="receipt-row"><span>Дата:</span><span>08.02.2023 11:20</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
-                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>1 500,00</span></div>
-                    <div class="receipt-row"><span>1 500 ед × 1.00</span><span>1 500,00</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГО:</span><span>1 500,00</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Безналичными:</span><span>1 500,00</span></div>
-                    <div class="receipt-row"><span>Email покупателя:</span><span>user20230001@gmail.com</span></div>
-                    <div class="receipt-row"><span>ФП:</span><span>961301953</span></div>
-                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Пополнение счёта (февраль 2023).
+                        Сумма <strong>1 500 ₽</strong> и email <strong>user20230001@gmail.com</strong> сверяются с историей транзакций.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Пополнение счёта (февраль 2023).
-                    Сумма <strong>1 500 ₽</strong> и email <strong>user20230001@gmail.com</strong> сверяются с историей транзакций.
-                </p>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">2022 год — Пополнение счёта</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>КАССОВЫЙ ЧЕК № 15 / Приход</strong><br>
-                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+            <details>
+                <summary>2022 год — Пополнение счёта</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>КАССОВЫЙ ЧЕК № 15 / Приход</strong><br>
+                            ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                        </div>
+                        <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037051</span></div>
+                        <div class="receipt-row"><span>ФН №:</span><span>9961440300710353</span></div>
+                        <div class="receipt-row"><span>ФД №:</span><span>24670</span></div>
+                        <div class="receipt-row"><span>Смена:</span><span>74</span></div>
+                        <div class="receipt-row"><span>Дата:</span><span>27.10.2022 13:31</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                        <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>165,00</span></div>
+                        <div class="receipt-row"><span>165 ед × 1.00</span><span>165,00</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГО:</span><span>165,00</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Безналичными:</span><span>165,00</span></div>
+                        <div class="receipt-row"><span>Email покупателя:</span><span>user20220001@gmail.com</span></div>
+                        <div class="receipt-row"><span>ФП:</span><span>1617244804</span></div>
+                        <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
                     </div>
-                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037051</span></div>
-                    <div class="receipt-row"><span>ФН №:</span><span>9961440300710353</span></div>
-                    <div class="receipt-row"><span>ФД №:</span><span>24670</span></div>
-                    <div class="receipt-row"><span>Смена:</span><span>74</span></div>
-                    <div class="receipt-row"><span>Дата:</span><span>27.10.2022 13:31</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
-                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>165,00</span></div>
-                    <div class="receipt-row"><span>165 ед × 1.00</span><span>165,00</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГО:</span><span>165,00</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Безналичными:</span><span>165,00</span></div>
-                    <div class="receipt-row"><span>Email покупателя:</span><span>user20220001@gmail.com</span></div>
-                    <div class="receipt-row"><span>ФП:</span><span>1617244804</span></div>
-                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Пополнение счёта (октябрь 2022).
+                        Сумма <strong>165 ₽</strong> и email <strong>user20220001@gmail.com</strong> сверяются с историей транзакций.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Пополнение счёта (октябрь 2022).
-                    Сумма <strong>165 ₽</strong> и email <strong>user20220001@gmail.com</strong> сверяются с историей транзакций.
-                </p>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">2021 год  — Пополнение счёта</div>
-                <div class="receipt-example">
-                    <div class="receipt-header">
-                        <strong>КАССОВЫЙ ЧЕК № 32 / Приход</strong><br>
-                        ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+            <details>
+                <summary>2021 год — Пополнение счёта</summary>
+                <div class="details-content">
+                    <div class="receipt-example">
+                        <div class="receipt-header">
+                            <strong>КАССОВЫЙ ЧЕК № 32 / Приход</strong><br>
+                            ООО "ЭКСБО СЕВЕР" ИНН 7813259482
+                        </div>
+                        <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037037</span></div>
+                        <div class="receipt-row"><span>ФН №:</span><span>9287440300899815</span></div>
+                        <div class="receipt-row"><span>ФД №:</span><span>26590</span></div>
+                        <div class="receipt-row"><span>Смена:</span><span>158</span></div>
+                        <div class="receipt-row"><span>Дата:</span><span>23.06.2021 11:45</span></div>
+                        <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
+                        <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>6 823.00</span></div>
+                        <div class="receipt-row"><span>6 823 ед × 1.00</span><span>6 823.00</span></div>
+                        <div class="receipt-total">
+                            <div class="receipt-row"><span>ИТОГО:</span><span>6 823.00</span></div>
+                        </div>
+                        <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
+                        <div class="receipt-row"><span>Безналичными:</span><span>6 823.00</span></div>
+                        <div class="receipt-row"><span>Email покупателя:</span><span>user20210001@proton.me</span></div>
+                        <div class="receipt-row"><span>ФП:</span><span>177335407</span></div>
+                        <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
                     </div>
-                    <div class="receipt-row"><span>РН ККТ:</span><span>0005119349037037</span></div>
-                    <div class="receipt-row"><span>ФН №:</span><span>9287440300899815</span></div>
-                    <div class="receipt-row"><span>ФД №:</span><span>26590</span></div>
-                    <div class="receipt-row"><span>Смена:</span><span>158</span></div>
-                    <div class="receipt-row"><span>Дата:</span><span>23.06.2021 11:45</span></div>
-                    <div class="receipt-row"><span>Адрес:</span><span>Москва, Волгоградский проспект, 42-9</span></div>
-                    <div class="receipt-row"><span>Сайт:</span><span>https://stalcraft.net</span></div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Пополнение счета stalcraft.net</span><span>6 823.00</span></div>
-                    <div class="receipt-row"><span>6 823 ед × 1.00</span><span>6 823.00</span></div>
-                    <div class="receipt-total">
-                        <div class="receipt-row"><span>ИТОГО:</span><span>6 823.00</span></div>
-                    </div>
-                    <hr style="border: none; border-top: 1px dashed #000; margin: 15px 0;">
-                    <div class="receipt-row"><span>Безналичными:</span><span>6 823.00</span></div>
-                    <div class="receipt-row"><span>Email покупателя:</span><span>user20210001@proton.me</span></div>
-                    <div class="receipt-row"><span>ФП:</span><span>177335407</span></div>
-                    <div class="receipt-row"><span>Сайт ФНС:</span><span>https://www.nalog.ru/rn77/</span></div>
+                    <p class="content-block-text" style="margin-top: 15px;">
+                        <strong>Проверка:</strong> Раннее пополнение счёта (июнь 2021) подтверждает долгосрочное владение аккаунтом.
+                        Сумма <strong>6 823 ₽</strong> и email <strong>user20210001@proton.me</strong> сверяются с историей транзакций.
+                    </p>
                 </div>
-                <p class="content-block-text" style="margin-top: 15px;">
-                    <strong>Проверка:</strong> Раннее пополнение счёта (июнь 2021) подтверждает долгосрочное владение аккаунтом.
-                    Сумма <strong>6 823 ₽</strong> и email <strong>user20210001@proton.me</strong> сверяются с историей транзакций.
-                </p>
-            </div>
+            </details>
 
             <div class="info-box">
                 <div class="info-box-title">Какие данные из чеков важны</div>
@@ -1273,210 +1420,225 @@ start=true</pre>
             </div>
 
             <h4>Детальный лог активности (пример данных веб-клиента)</h4>
-            
-            <div class="content-block">
-                <div class="content-block-title">Входы в лаунчер</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">05.03.2026, 19:15</div>
-                        <div class="activity-details">EXBO Launcher · Moscow · IP 72.62.63.198</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">20.02.2026, 14:22</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 178.46.115.201</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">19.02.2026, 09:45</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">17.02.2026, 21:18</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">17.02.2026, 08:33</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">16.02.2026, 23:47</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">16.02.2026, 16:29</div>
-                        <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
-                    </div>
-                </div>
-            </div>
+            <p class="content-block-text" style="margin-bottom: 20px; color: var(--gray);">
+                Нажмите на категорию, чтобы просмотреть детальную историю:
+            </p>
 
-            <div class="content-block">
-                <div class="content-block-title">Смена почтового адреса</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 21:18</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 08:47</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.08.2024, 23:15</div>
-                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">27.08.2024, 19:56</div>
-                        <div class="activity-details">Windows 10.0 · Frankfurt am Main · IP 94.131.109.151</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.07.2024, 13:22</div>
-                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">07.06.2024, 15:41</div>
-                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+            <details>
+                <summary>Входы в лаунчер</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">05.03.2026, 19:15</div>
+                            <div class="activity-details">EXBO Launcher · Moscow · IP 72.62.63.198</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">20.02.2026, 14:22</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 178.46.115.201</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">19.02.2026, 09:45</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">17.02.2026, 21:18</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">17.02.2026, 08:33</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">16.02.2026, 23:47</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">16.02.2026, 16:29</div>
+                            <div class="activity-details">EXBO Launcher · Yekaterinburg · IP 188.16.63.142</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">Смена пароля</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">16.02.2026, 11:33</div>
-                        <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">11.10.2025, 16:47</div>
-                        <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 188.17.187.215</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">12.06.2025, 09:25</div>
-                        <div class="activity-details">AndroidOS 10 · IP 79.127.142.168</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 08:47</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.08.2024, 22:51</div>
-                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">27.08.2024, 20:38</div>
-                        <div class="activity-details">Windows 10.0 · Polyarnyye Zori · IP 91.210.207.68</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.07.2024, 12:14</div>
-                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+            <details>
+                <summary>Смена почтового адреса</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 21:18</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 08:47</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.08.2024, 23:15</div>
+                            <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">27.08.2024, 19:56</div>
+                            <div class="activity-details">Windows 10.0 · Frankfurt am Main · IP 94.131.109.151</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.07.2024, 13:22</div>
+                            <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">07.06.2024, 15:41</div>
+                            <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">Подключение социальных сетей</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">22.03.2025, 17:15</div>
-                        <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 5.166.37.71</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">22.03.2025, 17:08</div>
-                        <div class="activity-details">AndroidOS 10 · IP 176.227.215.85</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">04.09.2024, 20:33</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">04.09.2024, 20:21</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 21:25</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 21:19</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 18:52</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">30.12.2023, 19:28</div>
-                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">30.12.2023, 19:11</div>
-                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
+            <details>
+                <summary>Смена пароля</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">16.02.2026, 11:33</div>
+                            <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">11.10.2025, 16:47</div>
+                            <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 188.17.187.215</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">12.06.2025, 09:25</div>
+                            <div class="activity-details">AndroidOS 10 · IP 79.127.142.168</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 08:47</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.08.2024, 22:51</div>
+                            <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">27.08.2024, 20:38</div>
+                            <div class="activity-details">Windows 10.0 · Polyarnyye Zori · IP 91.210.207.68</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.07.2024, 12:14</div>
+                            <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">Смена статуса 2FA</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">16.02.2026, 11:42</div>
-                        <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">01.09.2024, 20:15</div>
-                        <div class="activity-details">AndroidOS 10 · Moscow · IP 176.15.253.178</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 08:38</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.09.2024, 08:35</div>
-                        <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.08.2024, 23:47</div>
-                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.08.2024, 23:38</div>
-                        <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">28.07.2024, 11:25</div>
-                        <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">07.06.2024, 15:58</div>
-                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+            <details>
+                <summary>Подключение социальных сетей</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">22.03.2025, 17:15</div>
+                            <div class="activity-details">Windows 10.0 · Yekaterinburg · IP 5.166.37.71</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">22.03.2025, 17:08</div>
+                            <div class="activity-details">AndroidOS 10 · IP 176.227.215.85</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">04.09.2024, 20:33</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">04.09.2024, 20:21</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 21:25</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 21:19</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 18:52</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">30.12.2023, 19:28</div>
+                            <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">30.12.2023, 19:11</div>
+                            <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.185.28</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
 
-            <div class="content-block">
-                <div class="content-block-title">Восстановление пароля</div>
-                <div class="activity-log">
-                    <div class="activity-item">
-                        <div class="activity-date">23.08.2024, 16:45</div>
-                        <div class="activity-details">iOS 18.0 · IP 89.113.158.112</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">07.06.2024, 15:58</div>
-                        <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">17.12.2023, 14:55</div>
-                        <div class="activity-details">iOS 17.1.2 · Novosibirsk · IP 95.104.185.28</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.11.2023, 11:42</div>
-                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-date">02.11.2023, 10:58</div>
-                        <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
+            <details>
+                <summary>Смена статуса 2FA</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">16.02.2026, 11:42</div>
+                            <div class="activity-details">AndroidOS 10 · IP 69.42.213.228</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">01.09.2024, 20:15</div>
+                            <div class="activity-details">AndroidOS 10 · Moscow · IP 176.15.253.178</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 08:38</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.09.2024, 08:35</div>
+                            <div class="activity-details">Windows 10.0 · Asbest · IP 77.223.72.189</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.08.2024, 23:47</div>
+                            <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.08.2024, 23:38</div>
+                            <div class="activity-details">Windows 10.0 · Kyiv · IP 156.146.50.42</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">28.07.2024, 11:25</div>
+                            <div class="activity-details">Windows 10.0 · Vidnoye · IP 92.38.87.78</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">07.06.2024, 15:58</div>
+                            <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </details>
+
+            <details>
+                <summary>Восстановление пароля</summary>
+                <div class="details-content">
+                    <div class="activity-log">
+                        <div class="activity-item">
+                            <div class="activity-date">23.08.2024, 16:45</div>
+                            <div class="activity-details">iOS 18.0 · IP 89.113.158.112</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">07.06.2024, 15:58</div>
+                            <div class="activity-details">Windows 10.0 · Pavlodar · IP 147.30.116.167</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">17.12.2023, 14:55</div>
+                            <div class="activity-details">iOS 17.1.2 · Novosibirsk · IP 95.104.185.28</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.11.2023, 11:42</div>
+                            <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">02.11.2023, 10:58</div>
+                            <div class="activity-details">Windows 10.0 · Novosibirsk · IP 95.104.188.85</div>
+                        </div>
+                    </div>
+                </div>
+            </details>
 
             <div class="info-box">
                 <div class="info-box-title">Что анализируется в истории</div>
@@ -1545,385 +1707,389 @@ start=true</pre>
                 </p>
             </div>
 
-            <h4>2021 год — Базовая верификация с VK</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
-                <p class="content-block-text"><strong>Требования:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создайте новый аккаунт EXBO;</li>
-                    <li>Авторизуйтесь на exbo.ru;</li>
-                    <li>Привяжите VK к новому аккаунту;</li>
-                    <li>Запустите лаунчер и STALCRAFT;</li>
-                    <li>Создайте персонажа и зайдите на сервер;</li>
-                    <li>Заполните форму обращения.</li>
-                </ol>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
-                        <input type="text" value="ShadowHunter92" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
-                        <input type="text" value="ShadowHunter92_New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
-                        <input type="email" value="newemail2021@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-            </div>
+            <h4>Эволюция процедур по годам</h4>
+            <p class="content-block-text" style="margin-bottom: 20px; color: var(--gray);">
+                Нажмите на год, чтобы просмотреть процедуру восстановления того периода:
+            </p>
 
-            <h4>2021 год — Верификация через пополнение</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты (расширенная)</p>
-                <p class="content-block-text"><strong>Требования:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создайте новый аккаунт EXBO;</li>
-                    <li>Привяжите VK;</li>
-                    <li>Запустите лаунчер и STALCRAFT;</li>
-                    <li>Создайте персонажа;</li>
-                    <li>Пополните счёт на минимальную сумму тем же способом, что использовался на старом аккаунте;</li>
-                    <li>Отправьте чеки с обоих аккаунтов.</li>
-                </ol>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (4 поля):</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
-                        <input type="text" value="PhoenixRider" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
-                        <input type="text" value="PhoenixRider2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Чеки пополнения:</label>
-                        <div style="font-size: 0.9rem; color: var(--gray);">• Чек старого аккаунта: № 15/2021<br>• Чек нового аккаунта: № 16/2021</div>
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
-                        <input type="email" value="phoenix.mail2021@gmail.com" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-                <p class="content-block-text"><strong>Примечание:</strong> Предоставляется только новый чек (от нового аккаунта).</p>
-            </div>
-
-            <h4>2022 год — Отключение Google Authenticator</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>Тип обращения:</strong> Отключение 2FA</p>
-                <p class="content-block-text"><strong>Требования:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создайте новый аккаунт EXBO;</li>
-                    <li>Запустите лаунчер и STALCRAFT;</li>
-                    <li>Создайте персонажа и пройдите обучение до Болот;</li>
-                    <li>Заполните форму обращения.</li>
-                </ol>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
-                        <input type="text" value="NightWolf2000" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
-                        <input type="text" value="NightWolf2000Back" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
-                        <input type="text" value="WolfBolt" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-            </div>
-
-            <h4>2023 год — Стандартная процедура</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
-                <p class="content-block-text"><strong>Требования:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создайте новый аккаунт EXBO;</li>
-                    <li>Авторизуйтесь на exbo.ru;</li>
-                    <li>Привяжите VK;</li>
-                    <li>Запустите лаунчер и STALCRAFT;</li>
-                    <li>Создайте персонажа и зайдите на сервер;</li>
-                    <li>Заполните форму обращения.</li>
-                </ol>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
-                        <input type="text" value="CyberStorm77" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
-                        <input type="text" value="CyberStorm77New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
-                        <input type="email" value="cyberstorm.new@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-            </div>
-
-            <h4>2023–2026 годы — Текущая процедура (exbo.support / ОИБ)</h4>
-            <div class="content-block">
-                <div class="info-box" style="border-left-color: var(--black); background: var(--white);">
-                    <div class="info-box-title">Важное изменение с 2024 года</div>
-                    <p class="info-box-text">
-                        С 2024 года техническая поддержка EXBO <strong>не принимает обращения ВКонтакте</strong>.
-                        Все заявки на восстановление доступа подаются исключительно через официальный портал
-                        <strong>exbo.support</strong>. До 2024 года обращения принимались через Вк
-                    </p>
-                </div>
-                <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты / Восстановление доступа</p>
-                <p class="content-block-text"><strong>Канал обращения:</strong> Портал exbo.support (2024–2026) / ОИБ (2023)</p>
-                <p class="content-block-text"><strong>Требования:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создайте новый аккаунт EXBO;</li>
-                    <li>Авторизуйтесь в лаунчере / на exbo.ru;</li>
-                    <li>Запустите STALCRAFT / STALCRAFT: X;</li>
-                    <li>Создайте персонажа и пройдите обучение до локации «Болота»;</li>
-                    <li>Предоставьте данные нового аккаунта в ответе на обращение.</li>
-                </ol>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Важно:</strong> Не использовать «_» и «-» в логине. Только буквы и цифры.</p>
-            </div>
-
-            <h4>Форма создания обращения на exbo.support (2024–2026)</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>Шаг 1: Выбор категории обращения</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Учётная запись «EXBO»</label>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор категории обращения:*</label>
-                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                            <option>Учётная запись «EXBO»</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор характера обращения:*</label>
-                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                            <option>Утеряна электронная почта</option>
-                        </select>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Тема обращения:*</label>
-                        <input type="text" placeholder="Опишите возникшую проблему в нескольких словах" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Платформа, которую Вы используете для игры:*</label>
-                        <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                            <option>EXBO</option>
-                            <option>Steam</option>
-                            <option>VkPlay</option>
-                            <option>4game</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Логин учётной записи «EXBO»:*</label>
-                        <input type="text" value="ExampleUser2024" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 2: Описание проблемы</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Текст обращения:*</label>
-                    <textarea readonly rows="5" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray); font-family: inherit; font-size: 1rem;">Прошу сменить электронную почту на моём аккаунте. Имею доступ к старым чекам пополнения.</textarea>
-                </div>
-                <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 3: Прикрепление файлов (необязательно)</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 5px;">Скриншоты / Документы:</label>
-                    <div style="font-size: 0.95rem; color: var(--gray); padding: 15px; background: var(--gray-light); border: 1px dashed var(--gray);">
-                        📎 screenshot_account_info.png (245 KB)<br>
-                        📎 old_purchase_proof.png (189 KB)
-                    </div>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--gray);">
-                        <strong>Примечание:</strong> Прикрепление файлов необязательно. Кассовые чеки больше не являются основным требованием для восстановления доступа.
-                    </p>
-                </div>
-            </div>
-
-            <h4>Требования после создания обращения</h4>
-            <div class="content-block">
-                <p class="content-block-text"><strong>После подачи заявки поддержка может запросить:</strong></p>
-                <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
-                    <li>Создать новый аккаунт EXBO;</li>
-                    <li>Авторизоваться на exbo.ru;</li>
-                    <li>Привязать VK к новому аккаунту;</li>
-                    <li>Запустить лаунчер и STALCRAFT;</li>
-                    <li>Создать персонажа и зайти на сервер;</li>
-                    <li>Пройти обучение до локации «Болота»;</li>
-                    <li>Предоставить данные нового аккаунта в ответе на обращение.</li>
-                </ol>
-            </div>
-
-            <h4>Пример обращения через exbo.support (октябрь 2024)</h4>
-            <div class="content-block" style="background: var(--gray-light);">
-                <p class="content-block-text"><strong>Заявитель:</strong> Shwed2000</p>
-                <p class="content-block-text"><strong>Дата:</strong> 18.10.2024 13:31:50</p>
-                <p class="content-block-text"><strong>Тикет:</strong> 	#404337</p>
-                <p class="content-block-text"><strong>Статус:</strong> Требуется код подтверждения</p>
-                <p class="content-block-text"><strong>Канал:</strong> exbo.support (не VK!)</p>
-                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
-                <p class="content-block-text"><strong>Данные из формы:</strong></p>
-                <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
-                        <input type="text" value="ExampleUser2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
-                        <input type="text" value="ExampleUserVerify" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
-                        <input type="text" value="VerifyCharacter" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                    <div>
-                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
-                        <input type="email" value="newemail.example@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
-                    </div>
-                </div>
-                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
-                <p class="content-block-text"><strong>Ответ поддержки (шаг 1):</strong></p>
-                <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
-                    <em>Добрый день!</em><br><br>
-                    Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
-                    Мы можем сменить электронную почту на Вашей учётной записи «EXBO».<br><br>
-                    Для этого просим Вас проделать следующие действия:<br>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>Создайте новую учётную запись «EXBO»;</li>
-                        <li>Авторизуйтесь в лаунчере «EXBO»;</li>
-                        <li>Запустите игру «STALCRAFT»;</li>
-                        <li>Создайте нового игрового персонажа;</li>
-                        <li>Пройдите обучение до локации «Болота».</li>
+            <details>
+                <summary>2021 год — Базовая верификация с VK</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
+                    <p class="content-block-text"><strong>Требования:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создайте новый аккаунт EXBO;</li>
+                        <li>Авторизуйтесь на exbo.ru;</li>
+                        <li>Привяжите VK к новому аккаунту;</li>
+                        <li>Запустите лаунчер и STALCRAFT;</li>
+                        <li>Создайте персонажа и зайдите на сервер;</li>
+                        <li>Заполните форму обращения.</li>
                     </ol>
-                    После этого просим отправить нам следующую информацию:<br>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>Логин учётной записи «EXBO», на которой необходимо сменить электронную почту;</li>
-                        <li>Логин новой учётной записи «EXBO», на которой был создан персонаж и пройдено обучение;</li>
-                        <li>Имя персонажа, на котором было пройдено обучение до локации «Болота»;</li>
-                        <li>Новый адрес электронной почты, который не привязан к другой учётной записи «EXBO».</li>
-                    </ul>
-                    При создании новой учётной записи «EXBO» просим не вводить в поле логина знаки нижнего подчёркивания («_») или дефис («-»). Рекомендуем использовать исключительно буквы и цифры.<br><br>
-                    Все перечисленные действия необходимы для подтверждения Вашей личности и того факта, что данная учётная запись «EXBO» действительно принадлежит Вам, а не кому-то другому.
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                            <input type="text" value="ShadowHunter92" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                            <input type="text" value="ShadowHunter92_New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
+                            <input type="email" value="newemail2021@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                    </div>
                 </div>
-                <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
-                <p class="content-block-text"><strong>Ответ поддержки (шаг 2 — код подтверждения):</strong></p>
-                <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
-                    <em>Добрый день!</em><br><br>
-                    Благодарим Вас за предоставленные данные.<br><br>
-                    <strong>В течение пяти минут на Вашу почту в игре «STALCRAFT: X» придёт специальное письмо с кодом.</strong> Нам необходимо получить этот код.<br><br>
-                    Пожалуйста, проделайте следующие действия:<br>
-                    <ol style="margin-left: 20px; margin-top: 10px;">
-                        <li>Авторизуйтесь под новой учётной записью.</li>
-                        <li>Запустите игру «STALCRAFT: X» и зайдите на сервер.</li>
-                        <li>Нажмите клавишу «ESC» для открытия главного меню.</li>
-                        <li>Нажмите на значок письма в левом верхнем углу.</li>
-                        <li>В списке откройте письмо от нашей системы.</li>
-                        <li>Скопируйте и отправьте код в данное обращение.</li>
+            </details>
+
+            <details>
+                <summary>2021 год — Верификация через пополнение</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты (расширенная)</p>
+                    <p class="content-block-text"><strong>Требования:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создайте новый аккаунт EXBO;</li>
+                        <li>Привяжите VK;</li>
+                        <li>Запустите лаунчер и STALCRAFT;</li>
+                        <li>Создайте персонажа;</li>
+                        <li>Пополните счёт на минимальную сумму тем же способом, что использовался на старом аккаунте;</li>
+                        <li>Отправьте чеки с обоих аккаунтов.</li>
                     </ol>
-                    Просим отправить полученный код в течение <strong>48 часов</strong> с момента его получения.<br><br>
-                    Если по какой-то причине Вы не смогли получить код, то сообщите нам об этом в данном обращении.
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (4 поля):</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                            <input type="text" value="PhoenixRider" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                            <input type="text" value="PhoenixRider2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Чеки пополнения:</label>
+                            <div style="font-size: 0.9rem; color: var(--gray);">• Чек старого аккаунта: № 15/2021<br>• Чек нового аккаунта: № 16/2021</div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
+                            <input type="email" value="phoenix.mail2021@gmail.com" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                    </div>
+                    <p class="content-block-text"><strong>Примечание:</strong> Предоставляется только новый чек (от нового аккаунта).</p>
                 </div>
-                <div class="info-box" style="margin-top: 15px;">
-                    <div class="info-box-title">Примечание</div>
-                    <p class="info-box-text">
-                        Код подтверждения отправляется внутриигровой почтой в STALCRAFT: X. Это дополнительная мера защиты для подтверждения владения аккаунтом.
-                    </p>
+            </details>
+
+            <details>
+                <summary>2022 год — Отключение Google Authenticator</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>Тип обращения:</strong> Отключение 2FA</p>
+                    <p class="content-block-text"><strong>Требования:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создайте новый аккаунт EXBO;</li>
+                        <li>Запустите лаунчер и STALCRAFT;</li>
+                        <li>Создайте персонажа и пройдите обучение до Болот;</li>
+                        <li>Заполните форму обращения.</li>
+                    </ol>
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                            <input type="text" value="NightWolf2000" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                            <input type="text" value="NightWolf2000Back" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
+                            <input type="text" value="WolfBolt" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </details>
+
+            <details>
+                <summary>2023 год — Стандартная процедура</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты</p>
+                    <p class="content-block-text"><strong>Требования:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создайте новый аккаунт EXBO;</li>
+                        <li>Авторизуйтесь на exbo.ru;</li>
+                        <li>Привяжите VK;</li>
+                        <li>Запустите лаунчер и STALCRAFT;</li>
+                        <li>Создайте персонажа и зайдите на сервер;</li>
+                        <li>Заполните форму обращения.</li>
+                    </ol>
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Форма (3 поля):</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                            <input type="text" value="CyberStorm77" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                            <input type="text" value="CyberStorm77New" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Новая почта:</label>
+                            <input type="email" value="cyberstorm.new@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>2023–2026 годы — Текущая процедура (exbo.support / ОИБ)</summary>
+                <div class="details-content">
+                    <div class="info-box" style="border-left-color: var(--black); background: var(--white);">
+                        <div class="info-box-title">Важное изменение с 2024 года</div>
+                        <p class="info-box-text">
+                            С 2024 года техническая поддержка EXBO <strong>не принимает обращения ВКонтакте</strong>.
+                            Все заявки на восстановление доступа подаются исключительно через официальный портал
+                            <strong>exbo.support</strong>. До 2024 года обращения принимались через Вк
+                        </p>
+                    </div>
+                    <p class="content-block-text"><strong>Тип обращения:</strong> Смена электронной почты / Восстановление доступа</p>
+                    <p class="content-block-text"><strong>Канал обращения:</strong> Портал exbo.support (2024–2026) / ОИБ (2023)</p>
+                    <p class="content-block-text"><strong>Требования:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создайте новый аккаунт EXBO;</li>
+                        <li>Авторизуйтесь в лаунчере / на exbo.ru;</li>
+                        <li>Запустите STALCRAFT / STALCRAFT: X;</li>
+                        <li>Создайте персонажа и пройдите обучение до локации «Болота»;</li>
+                        <li>Предоставьте данные нового аккаунта в ответе на обращение.</li>
+                    </ol>
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Важно:</strong> Не использовать «_» и «-» в логине. Только буквы и цифры.</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>Форма создания обращения на exbo.support (2024–2026)</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>Шаг 1: Выбор категории обращения</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Учётная запись «EXBO»</label>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор категории обращения:*</label>
+                            <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                                <option>Учётная запись «EXBO»</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Выбор характера обращения:*</label>
+                            <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                                <option>Утеряна электронная почта</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Тема обращения:*</label>
+                            <input type="text" placeholder="Опишите возникшую проблему в нескольких словах" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Платформа, которую Вы используете для игры:*</label>
+                            <select disabled style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                                <option>EXBO</option>
+                                <option>Steam</option>
+                                <option>VkPlay</option>
+                                <option>4game</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 5px;">Логин учётной записи «EXBO»:*</label>
+                            <input type="text" value="ExampleUser2024" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                        </div>
+                    </div>
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 2: Описание проблемы</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Текст обращения:*</label>
+                        <textarea readonly rows="5" style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray); font-family: inherit; font-size: 1rem;">Прошу сменить электронную почту на моём аккаунте. Имею доступ к старым чекам пополнения.</textarea>
+                    </div>
+                    <p class="content-block-text" style="margin-top: 15px;"><strong>Шаг 3: Прикрепление файлов (необязательно)</strong></p>
+                    <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px;">Скриншоты / Документы:</label>
+                        <div style="font-size: 0.95rem; color: var(--gray); padding: 15px; background: var(--gray-light); border: 1px dashed var(--gray);">
+                            📎 screenshot_account_info.png (245 KB)<br>
+                            📎 old_purchase_proof.png (189 KB)
+                        </div>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: var(--gray);">
+                            <strong>Примечание:</strong> Прикрепление файлов необязательно. Кассовые чеки больше не являются основным требованием для восстановления доступа.
+                        </p>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>Требования после создания обращения</summary>
+                <div class="details-content">
+                    <p class="content-block-text"><strong>После подачи заявки поддержка может запросить:</strong></p>
+                    <ol style="margin-left: 25px; font-size: 1.05rem; line-height: 2;">
+                        <li>Создать новый аккаунт EXBO;</li>
+                        <li>Авторизоваться на exbo.ru;</li>
+                        <li>Привязать VK к новому аккаунту;</li>
+                        <li>Запустить лаунчер и STALCRAFT;</li>
+                        <li>Создать персонажа и зайти на сервер;</li>
+                        <li>Пройти обучение до локации «Болота»;</li>
+                        <li>Предоставить данные нового аккаунта в ответе на обращение.</li>
+                    </ol>
+                </div>
+            </details>
+
+            <details>
+                <summary>Пример обращения через exbo.support (октябрь 2024)</summary>
+                <div class="details-content">
+                    <div class="content-block" style="background: var(--gray-light);">
+                        <p class="content-block-text"><strong>Заявитель:</strong> Shwed2000</p>
+                        <p class="content-block-text"><strong>Дата:</strong> 18.10.2024 13:31:50</p>
+                        <p class="content-block-text"><strong>Тикет:</strong> #404337</p>
+                        <p class="content-block-text"><strong>Статус:</strong> Требуется код подтверждения</p>
+                        <p class="content-block-text"><strong>Канал:</strong> exbo.support (не VK!)</p>
+                        <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                        <p class="content-block-text"><strong>Данные из формы:</strong></p>
+                        <div style="background: var(--white); padding: 20px; border: 1px solid var(--gray); margin-top: 15px;">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; font-weight: 600; margin-bottom: 5px;">1. Логин старого аккаунта:</label>
+                                <input type="text" value="ExampleUser2021" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; font-weight: 600; margin-bottom: 5px;">2. Логин нового аккаунта:</label>
+                                <input type="text" value="ExampleUserVerify" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; font-weight: 600; margin-bottom: 5px;">3. Имя персонажа:</label>
+                                <input type="text" value="VerifyCharacter" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; margin-bottom: 5px;">4. Новая почта:</label>
+                                <input type="email" value="newemail.example@proton.me" readonly style="width: 100%; padding: 10px; background: var(--gray-light); border: 1px solid var(--gray);">
+                            </div>
+                        </div>
+                        <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                        <p class="content-block-text"><strong>Ответ поддержки (шаг 1):</strong></p>
+                        <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
+                            <em>Добрый день!</em><br><br>
+                            Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
+                            Мы можем сменить электронную почту на Вашей учётной записи «EXBO».<br><br>
+                            Для этого просим Вас проделать следующие действия:<br>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li>Создайте новую учётную запись «EXBO»;</li>
+                                <li>Авторизуйтесь в лаунчере «EXBO»;</li>
+                                <li>Запустите игру «STALCRAFT»;</li>
+                                <li>Создайте нового игрового персонажа;</li>
+                                <li>Пройдите обучение до локации «Болота».</li>
+                            </ol>
+                            После этого просим отправить нам следующую информацию:<br>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Логин учётной записи «EXBO», на которой необходимо сменить электронную почту;</li>
+                                <li>Логин новой учётной записи «EXBO», на которой был создан персонаж и пройдено обучение;</li>
+                                <li>Имя персонажа, на котором было пройдено обучение до локации «Болота»;</li>
+                                <li>Новый адрес электронной почты, который не привязан к другой учётной записи «EXBO».</li>
+                            </ul>
+                            При создании новой учётной записи «EXBO» просим не вводить в поле логина знаки нижнего подчёркивания («_») или дефис («-»). Рекомендуем использовать исключительно буквы и цифры.<br><br>
+                            Все перечисленные действия необходимы для подтверждения Вашей личности и того факта, что данная учётная запись «EXBO» действительно принадлежит Вам, а не кому-то другому.
+                        </div>
+                        <hr style="border: none; border-top: 1px solid var(--gray); margin: 15px 0;">
+                        <p class="content-block-text"><strong>Ответ поддержки (шаг 2 — код подтверждения):</strong></p>
+                        <div style="background: var(--white); padding: 15px; border-left: 3px solid var(--black); margin-top: 10px; font-size: 0.95rem; line-height: 1.8;">
+                            <em>Добрый день!</em><br><br>
+                            Благодарим Вас за предоставленные данные.<br><br>
+                            <strong>В течение пяти минут на Вашу почту в игре «STALCRAFT: X» придёт специальное письмо с кодом.</strong> Нам необходимо получить этот код.<br><br>
+                            Пожалуйста, проделайте следующие действия:<br>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li>Авторизуйтесь под новой учётной записью.</li>
+                                <li>Запустите игру «STALCRAFT: X» и зайдите на сервер.</li>
+                                <li>Нажмите клавишу «ESC» для открытия главного меню.</li>
+                                <li>Нажмите на значок письма в левом верхнем углу.</li>
+                                <li>В списке откройте письмо от нашей системы.</li>
+                                <li>Скопируйте и отправьте код в данное обращение.</li>
+                            </ol>
+                            Просим отправить полученный код в течение <strong>48 часов</strong> с момента его получения.<br><br>
+                            Если по какой-то причине Вы не смогли получить код, то сообщите нам об этом в данном обращении.
+                        </div>
+                        <div class="info-box" style="margin-top: 15px;">
+                            <div class="info-box-title">Примечание</div>
+                            <p class="info-box-text">
+                                Код подтверждения отправляется внутриигровой почтой в STALCRAFT: X. Это дополнительная мера защиты для подтверждения владения аккаунтом.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
 
             <h4>Варианты ответов поддержки</h4>
-            
-            <div class="content-block">
-                <div class="content-block-title">Отказ в смене почты</div>
-                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
-                    <p style="font-size: 0.95rem; line-height: 1.8;">
-                        <strong>Здравствуйте!</strong><br><br>
-                        Сообщаем, что в смене электронной почты на учётной записи «EXBO» отказано.<br><br>
-                        Результаты внутренней проверки показали, что Вы не являетесь владельцем учётной записи, которая указана в форме.<br><br>
-                        Напоминаем, что владельцем учётной записи признаётся то лицо, которое её зарегистрировало.<br><br>
-                        В случае получения данных от чужой учётной записи, независимо от способа, будь то передача, дарение или покупка, право владения ею остаётся исключительно за пользователем, который её зарегистрировал.<br><br>
-                        В соответствии с пунктом 4.1.2 действующего лицензионного соглашения Вы не вправе использовать учётную запись другого пользователя.<br><br>
-                        <strong>Пункт 4.1.2 лицензионного соглашения:</strong><br>
-                        <em>4.1. Пользователь не вправе осуществлять следующие действия в отношении Игры:</em><br>
-                        <em>4.1.2. Получать доступ к Учётным Записям (Аккаунтам) Пользователей независимо от причины, а также каким-либо образом предоставлять доступ другому Пользователю к своей Учётной Записи (Аккаунту) на время или на неограниченный срок, включая, но не ограничиваясь, их обмен, продажу и передачу.</em><br><br>
-                        С уважением,<br>
-                        Отдел Игровой Безопасности.
-                    </p>
-                </div>
-                <div class="info-box" style="margin-top: 15px;">
-                    <div class="info-box-title">Причины отказа</div>
-                    <p class="info-box-text">
-                        <strong>Критические факторы (отказ при несовпадении):</strong> HWID не совпадает с зарегистрированным (−40%), оригинальная электронная почта недоступна (−10%).<br><br>
-                        <strong>Дополнительные факторы:</strong> расхождение данных о первых пополнениях (чеки не предоставлены или не совпадают, −12%), невозможность назвать точные даты создания аккаунта (−6%), провал верификации (код из внутриигровой почты не отправлен или неверный), отсутствие персонажей в истории аккаунта (−5%).<br><br>
-                        <strong>Результат:</strong> суммарный балл верификации <75% = отказ в восстановлении доступа.
-                    </p>
-                </div>
-            </div>
 
-            <div class="content-block">
-                <div class="content-block-title">Одобрение смены почты</div>
-                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
-                    <p style="font-size: 0.95rem; line-height: 1.8;">
-                        <strong>Здравствуйте!</strong><br><br>
-                        Сообщаем, что заявка на смену электронной почты на учётной записи «EXBO» одобрена.<br><br>
-                        Мы сменили электронную почту на ту, которую Вы указали в заявке ранее. Теперь Вам необходимо восстановить пароль от учётной записи «EXBO».<br><br>
-                        <strong>Инструкция по восстановлению пароля:</strong><br>
-                        <ol style="margin-left: 20px; margin-top: 10px;">
-                            <li>Перейдите на официальный сайт компании «EXBO» и в правом верхнем углу нажмите кнопку «Войти».</li>
-                            <li>Откроется новое окно. Нажмите кнопку «Забыли пароль», которая располагается в центре.</li>
-                            <li>Введите логин учётной записи или адрес электронной почты. Нажмите кнопку «Отправить».</li>
-                            <li>Введите код подтверждения из приложения двухфакторной аутентификации и нажмите кнопку «Отправить».</li>
-                            <li>Пройдите проверку на робота, нажав на серый квадратик у надписи «Я не робот».</li>
-                            <li>Откройте электронную почту и отыщите на ней письмо от компании «EXBO».</li>
-                            <li>Откройте данное письмо. В нём нажмите кнопку «Сбросить пароль» или перейдите по ссылке ниже.</li>
-                            <li>В новом окне введите новый пароль, после этого повторите его. Нажмите кнопку «Отправить».</li>
-                        </ol>
-                        После этого пароль будет изменён. Запишите его или сохраните в менеджере паролей браузера.<br><br>
-                        <strong>Рекомендации по безопасности:</strong><br>
-                        <ul style="margin-left: 20px; margin-top: 10px;">
-                            <li>Включите двухфакторную аутентификацию (2FA);</li>
-                            <li>Привяжите аккаунты социальных сетей (VK, Google);</li>
-                            <li>Сохраните резервные коды восстановления;</li>
-                            <li>Не передавайте данные от аккаунта третьим лицам.</li>
-                        </ul>
-                        С уважением,<br>
-                        Отдел Игровой Безопасности.
-                    </p>
+            <details>
+                <summary>Отказ в смене почты</summary>
+                <div class="details-content">
+                    <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                        <p style="font-size: 0.95rem; line-height: 1.8;">
+                            <strong>Здравствуйте!</strong><br><br>
+                            Сообщаем, что в смене электронной почты на учётной записи «EXBO» отказано.<br><br>
+                            Результаты внутренней проверки показали, что Вы не являетесь владельцем учётной записи, которая указана в форме.<br><br>
+                            Напоминаем, что владельцем учётной записи признаётся то лицо, которое её зарегистрировало.<br><br>
+                            В случае получения данных от чужой учётной записи, независимо от способа, будь то передача, дарение или покупка, право владения ею остаётся исключительно за пользователем, который её зарегистрировал.<br><br>
+                            В соответствии с пунктом 4.1.2 действующего лицензионного соглашения Вы не вправе использовать учётную запись другого пользователя.<br><br>
+                            <strong>Пункт 4.1.2 лицензионного соглашения:</strong><br>
+                            <em>4.1. Пользователь не вправе осуществлять следующие действия в отношении Игры:</em><br>
+                            <em>4.1.2. Получать доступ к Учётным Записям (Аккаунтам) Пользователей независимо от причины, а также каким-либо образом предоставлять доступ другому Пользователю к своей Учётной Записи (Аккаунту) на время или на неограниченный срок, включая, но не ограничиваясь, их обмен, продажу и передачу.</em><br><br>
+                            С уважением,<br>
+                            Отдел Игровой Безопасности.
+                        </p>
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="info-box-title">Причины отказа</div>
+                        <p class="info-box-text">
+                            <strong>Критические факторы (отказ при несовпадении):</strong> HWID не совпадает с зарегистрированным (−40%), оригинальная электронная почта недоступна (−10%).<br><br>
+                            <strong>Дополнительные факторы:</strong> расхождение данных о первых пополнениях (чеки не предоставлены или не совпадают, −12%), невозможность назвать точные даты создания аккаунта (−6%), провал верификации (код из внутриигровой почты не отправлен или неверный), отсутствие персонажей в истории аккаунта (−5%).<br><br>
+                            <strong>Результат:</strong> суммарный балл верификации <75% = отказ в восстановлении доступа.
+                        </p>
+                    </div>
                 </div>
-                <div class="info-box" style="margin-top: 15px;">
-                    <div class="info-box-title">Условия одобрения</div>
-                    <p class="info-box-text">
-                        <strong>Обязательные факторы:</strong> совпадение HWID (40%), доступ к оригинальной электронной почте (10%), предоставление кассовых чеков с первых пополнений (12%).<br><br>
-                        <strong>Дополнительные факторы:</strong> точные даты создания аккаунта и первых транзакций (+6%), успешное прохождение верификации (код из внутриигровой почты STALCRAFT: X), наличие персонажей в истории аккаунта (+5%), привязка социальных сетей VK/Google (+8% каждая).<br><br>
-                        <strong>Порог верификации:</strong> ≥75% для успешного восстановления доступа.
-                    </p>
-                </div>
-            </div>
+            </details>
 
-            <h4>Апелляция на решение поддержки</h4>
-            <div class="content-block">
-                <div class="content-block-title">Обжалование решения Отдела Игровой Безопасности</div>
-                <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
-                    <p style="font-size: 0.95rem; line-height: 1.8;">
-                        <strong>Добрый день!</strong><br><br>
-                        Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
-                        Если Вы считаете, что сотрудник отдела игровой безопасности допустил ошибку при рассмотрении Вашей ситуации, Вам следует обратиться по следующему адресу электронной почты:<br><br>
-                        <strong style="font-size: 1.1rem; color: var(--black);">complaints@exbo.ru</strong><br><br>
-                        С уважением,<br>
-                        Команда Поддержки.
-                    </p>
+            <details>
+                <summary>Одобрение смены почты</summary>
+                <div class="details-content">
+                    <div style="background: var(--gray-light); padding: 20px; border-left: 4px solid var(--black); margin-top: 15px;">
+                        <p style="font-size: 0.95rem; line-height: 1.8;">
+                            <strong>Здравствуйте!</strong><br><br>
+                            Сообщаем, что заявка на смену электронной почты на учётной записи «EXBO» одобрена.<br><br>
+                            Мы сменили электронную почту на ту, которую Вы указали в заявке ранее. Теперь Вам необходимо восстановить пароль от учётной записи «EXBO».<br><br>
+                            <strong>Инструкция по восстановлению пароля:</strong><br>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li>Перейдите на официальный сайт компании «EXBO» и в правом верхнем углу нажмите кнопку «Войти».</li>
+                                <li>Откроется новое окно. Нажмите кнопку «Забыли пароль», которая располагается в центре.</li>
+                                <li>Введите логин учётной записи или адрес электронной почты. Нажмите кнопку «Отправить».</li>
+                                <li>Введите код подтверждения из приложения двухфакторной аутентификации и нажмите кнопку «Отправить».</li>
+                                <li>Пройдите проверку на робота, нажав на серый квадратик у надписи «Я не робот».</li>
+                                <li>Откройте электронную почту и отыщите на ней письмо от компании «EXBO».</li>
+                                <li>Откройте данное письмо. В нём нажмите кнопку «Сбросить пароль» или перейдите по ссылке ниже.</li>
+                                <li>В новом окне введите новый пароль, после этого повторите его. Нажмите кнопку «Отправить».</li>
+                            </ol>
+                            После этого пароль будет изменён. Запишите его или сохраните в менеджере паролей браузера.<br><br>
+                            <strong>Рекомендации по безопасности:</strong><br>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Включите двухфакторную аутентификацию (2FA);</li>
+                                <li>Привяжите аккаунты социальных сетей (VK, Google);</li>
+                                <li>Сохраните резервные коды восстановления;</li>
+                                <li>Не передавайте данные от аккаунта третьим лицам.</li>
+                            </ul>
+                            С уважением,<br>
+                            Отдел Игровой Безопасности.
+                        </p>
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        <div class="info-box-title">Условия одобрения</div>
+                        <p class="info-box-text">
+                            <strong>Обязательные факторы:</strong> совпадение HWID (40%), доступ к оригинальной электронной почте (10%), предоставление кассовых чеков с первых пополнений (12%).<br><br>
+                            <strong>Дополнительные факторы:</strong> точные даты создания аккаунта и первых транзакций (+6%), успешное прохождение верификации (код из внутриигровой почты STALCRAFT: X), наличие персонажей в истории аккаунта (+5%), привязка социальных сетей VK/Google (+8% каждая).<br><br>
+                            <strong>Порог верификации:</strong> ≥75% для успешного восстановления доступа.
+                        </p>
+                    </div>
                 </div>
-                <div class="info-box" style="margin-top: 15px;">
-                    <div class="info-box-title">Когда стоит обращаться</div>
-                    <p class="info-box-text">
-                        <strong>Основания для апелляции:</strong> вы уверены в совпадении HWID, имеете доступ к оригинальной почте, предоставили все чеки и точные даты, успешно прошли верификацию, но получили отказ.<br><br>
-                        <strong>Срок рассмотрения:</strong> обычно 3-30 рабочих дней.<br><br>
-                        <strong>Что указать в письме:</strong> номер тикета, логин аккаунта, краткое описание ситуации, приложенные доказательства (чеки, скриншоты).
-                    </p>
-                </div>
-            </div>
+            </details>
         </section>
 
         <!-- Раздел 9: Калькулятор -->
@@ -2115,7 +2281,7 @@ start=true</pre>
             <div class="content-block">
                 <div class="content-block-title">Если HWID изменился (переезд, новый ПК)</div>
                 <p class="content-block-text">
-                    <strong>Проблема:</strong> При смене оборудования вы теряете 40% верификационного веса. 
+                    <strong>Проблема:</strong> При смене оборудования вы теряете 40% верификационного веса.
                     Максимально возможный балл в этом случае — 60%, что ниже порога в 75%.
                 </p>
                 <p class="content-block-text">
@@ -2130,11 +2296,52 @@ start=true</pre>
                 </ul>
             </div>
 
+            <div class="content-block" style="margin-top: 25px;">
+                <div class="content-block-title">Апелляция на решение поддержки</div>
+                <p class="content-block-text">
+                    Если вы получили отказ, но уверены в своей позиции, вы можете обжаловать решение Отдела Игровой Безопасности.
+                </p>
+                <div style="background: var(--black); color: var(--white); padding: 25px; margin: 20px 0; border-radius: 8px;">
+                    <p style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>Контакт для апелляции:</strong><br>
+                        <a href="mailto:complaints@exbo.ru" style="color: var(--white); font-size: 1.2rem; text-decoration: underline;">complaints@exbo.ru</a>
+                    </p>
+                    <p style="font-size: 0.95rem; line-height: 1.8; opacity: 0.9;">
+                        <strong>Добрый день!</strong><br><br>
+                        Благодарим Вас за обращение в службу поддержки «EXBO».<br><br>
+                        Если Вы считаете, что сотрудник отдела игровой безопасности допустил ошибку при рассмотрении Вашей ситуации, Вам следует обратиться по указанному выше адресу электронной почты.<br><br>
+                        С уважением,<br>
+                        Команда Поддержки.
+                    </p>
+                </div>
+                <div class="info-box" style="border-left-color: #4CAF50; background: #e8f5e9;">
+                    <div class="info-box-title" style="color: #2E7D32;">Когда стоит обращаться</div>
+                    <p class="info-box-text">
+                        <strong>Основания для апелляции:</strong> вы уверены в совпадении HWID, имеете доступ к оригинальной почте, предоставили все чеки и точные даты, успешно прошли верификацию, но получили отказ.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Что указать в письме</div>
+                    <p class="info-box-text">
+                        <strong>Номер тикета:</strong> укажите номер вашего обращения в поддержке.<br>
+                        <strong>Логин аккаунта:</strong> логин аккаунта, по которому получен отказ.<br>
+                        <strong>Описание ситуации:</strong> кратко опишите проблему и почему вы не согласны с решением.<br>
+                        <strong>Доказательства:</strong> приложите скриншоты, чеки, выписки и другие документы, подтверждающие владение.
+                    </p>
+                </div>
+                <div class="info-box" style="margin-top: 15px;">
+                    <div class="info-box-title">Срок рассмотрения</div>
+                    <p class="info-box-text">
+                        Обычно <strong>3-30 рабочих дней</strong>. Ответ придёт на электронную почту, указанную в обращении.
+                    </p>
+                </div>
+            </div>
+
             <div class="info-box">
                 <div class="info-box-title">Важно</div>
                 <p class="info-box-text">
-                    Не пытайтесь использовать скрипты для автоматизации запросов к API. 
-                    Система обнаруживает неестественные паттерны трафика и может заблокировать 
+                    Не пытайтесь использовать скрипты для автоматизации запросов к API.
+                    Система обнаруживает неестественные паттерны трафика и может заблокировать
                     обращение в поддержку. Все действия выполняйте вручную через официальный лаунчер.
                 </p>
             </div>
