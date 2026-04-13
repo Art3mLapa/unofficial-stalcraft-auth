@@ -1,7 +1,12 @@
+
+
+![U.SC.A](https://github.com/user-attachments/assets/d1e529e5-b0ab-4141-b35f-1267671109e4)
+
 # EXBO Account Checker — Исследование восстановления аккаунта
 
 Интерактивная веб-страница с исследованием системы верификации владельцев аккаунтов EXBO (Stalcraft).
-https://github.com/Nyrokume/Exbo-security/blob/main/docs/index.html
+
+https://art3mlapa.github.io/unofficial-stalcraft-auth/
 
 ## 📋 Описание
 
@@ -13,32 +18,6 @@ https://github.com/Nyrokume/Exbo-security/blob/main/docs/index.html
 - **Финансовые доказательства** — кассовые чеки как подтверждение владения
 - **История активности** — анализ геолокации, устройств, паттернов поведения
 - **Калькулятор шанса** — интерактивный расчёт вероятности восстановления
-
-## 🚀 Быстрый старт
-
-Просто откройте файл `index.html` в любом современном браузере:
-
-```bash
-# Windows
-start index.html
-
-# macOS
-open index.html
-
-# Linux
-xdg-open index.html
-```
-
-Установка дополнительных зависимостей не требуется.
-
-## 📁 Структура проекта
-
-```
-EXBO-account-checker/
-├──/docs
-├── index.html      # Основная страница с исследованием
-└── README.md       # Документация проекта
-```
 
 ## 🔧 Структура HTML-документа
 
@@ -75,21 +54,6 @@ EXBO-account-checker/
 - **50–74%** — требуются дополнительные доказательства
 - **<50%** — низкий шанс восстановления
 
-## 🛠 Технические детали
-
-### Требования
-
-- Любой современный браузер (Chrome, Firefox, Edge, Safari)
-- Поддержка JavaScript (для калькулятора)
-- Поддержка CSS Grid и Flexbox
-
-### Особенности реализации
-
-- **Чистый HTML/CSS/JS** — без внешних зависимостей
-- **Адаптивный дизайн** — корректное отображение на мобильных устройствах
-- **Интерактивный калькулятор** — мгновенный расчёт вероятности
-- **Минималистичный стиль** — чёрно-белая цветовая схема
-
 ## 📝 Примеры использования
 
 ### Для игроков
@@ -108,6 +72,7 @@ EXBO-account-checker/
 
 ## 📚 Источники
 
+- [Nyrokume](https://github.com/Nyrokume/Exbo-security) - автор оригинального репозитория
 - [unofficial-stalcraft-api](https://github.com/Art3mLapa/unofficial-stalcraft-api) — документация по API лаунчера
 - **HTTP Debugger** — инструмент для анализа HTTP/HTTPS запросов
 
